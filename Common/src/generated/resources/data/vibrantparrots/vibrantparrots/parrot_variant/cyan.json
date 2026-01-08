@@ -1,0 +1,8 @@
+{
+  "asset_id": "vibrantparrots:entity/parrot/parrot_cyan",
+  "spawn_conditions": [
+    {
+      "priority": 0
+    }
+  ]
+}
