@@ -3,11 +3,11 @@ package fuzs.vibrantparrots.client.renderer.entity.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fuzs.puzzleslib.api.client.renderer.v1.RenderStateExtraData;
 import fuzs.vibrantparrots.VibrantParrots;
+import fuzs.vibrantparrots.client.model.geom.ModModelLayers;
 import fuzs.vibrantparrots.init.ModRegistry;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
 import net.minecraft.client.model.animal.parrot.ParrotModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.ParrotRenderState;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Holder;
 import net.minecraft.util.context.ContextKey;
@@ -41,7 +40,7 @@ public class ModParrotOnShoulderLayer extends RenderLayer<AvatarRenderState, Pla
 
     public ModParrotOnShoulderLayer(RenderLayerParent<AvatarRenderState, PlayerModel> renderer, EntityModelSet modelSet) {
         super(renderer);
-        this.model = new ParrotModel(modelSet.bakeLayer(ModelLayers.PARROT));
+        this.model = new ParrotModel(modelSet.bakeLayer(ModModelLayers.PARROT));
     }
 
     public static void addLivingEntityRenderLayers(EntityType<?> entityType, LivingEntityRenderer<?, ?, ?> entityRenderer, EntityRendererProvider.Context context) {
@@ -104,7 +103,7 @@ public class ModParrotOnShoulderLayer extends RenderLayer<AvatarRenderState, Pla
                 packedLight,
                 OverlayTexture.NO_OVERLAY,
                 renderState.outlineColor,
-                (ModelFeatureRenderer.CrumblingOverlay) null);
+                null);
         poseStack.popPose();
     }
 }

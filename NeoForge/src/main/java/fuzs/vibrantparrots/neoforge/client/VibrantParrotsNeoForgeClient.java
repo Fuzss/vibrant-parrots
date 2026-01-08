@@ -5,6 +5,7 @@ import fuzs.puzzleslib.neoforge.api.data.v2.core.DataProviderHelper;
 import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.client.VibrantParrotsClient;
 import fuzs.vibrantparrots.data.client.ModLanguageProvider;
+import fuzs.vibrantparrots.data.client.ModModelProvider;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
 
@@ -13,6 +14,8 @@ public class VibrantParrotsNeoForgeClient {
 
     public VibrantParrotsNeoForgeClient() {
         ClientModConstructor.construct(VibrantParrots.MOD_ID, VibrantParrotsClient::new);
-        DataProviderHelper.registerDataProviders(VibrantParrots.MOD_ID, ModLanguageProvider::new);
+        DataProviderHelper.registerDataProviders(VibrantParrots.MOD_ID,
+                ModLanguageProvider::new,
+                ModModelProvider::new);
     }
 }

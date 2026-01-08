@@ -1,1 +1,20 @@
-{}
+{
+  "entity.vibrantparrots.parrot_egg": "Parrot Egg",
+  "item.vibrantparrots.black_parrot_egg": "Black Parrot Egg",
+  "item.vibrantparrots.blue_parrot_egg": "Blue Parrot Egg",
+  "item.vibrantparrots.brown_parrot_egg": "Brown Parrot Egg",
+  "item.vibrantparrots.cyan_parrot_egg": "Cyan Parrot Egg",
+  "item.vibrantparrots.gray_parrot_egg": "Grey Parrot Egg",
+  "item.vibrantparrots.green_parrot_egg": "Green Parrot Egg",
+  "item.vibrantparrots.light_blue_parrot_egg": "Light Blue Parrot Egg",
+  "item.vibrantparrots.light_gray_parrot_egg": "Light Grey Parrot Egg",
+  "item.vibrantparrots.lime_parrot_egg": "Lime Parrot Egg",
+  "item.vibrantparrots.magenta_parrot_egg": "Magenta Parrot Egg",
+  "item.vibrantparrots.orange_parrot_egg": "Orange Parrot Egg",
+  "item.vibrantparrots.pink_parrot_egg": "Pink Parrot Egg",
+  "item.vibrantparrots.purple_parrot_egg": "Purple Parrot Egg",
+  "item.vibrantparrots.red_parrot_egg": "Red Parrot Egg",
+  "item.vibrantparrots.white_parrot_egg": "White Parrot Egg",
+  "item.vibrantparrots.yellow_parrot_egg": "Yellow Parrot Egg",
+  "itemGroup.vibrantparrots.main": "Vibrant Parrots"
+}

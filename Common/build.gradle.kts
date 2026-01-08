@@ -9,7 +9,7 @@ dependencies {
 multiloader {
     mixins {
         mixin(
-            "ServerPlayerMixin", "ShoulderRidingEntityMixin"
+            "PlayerMixin", "ServerPlayerMixin", "ShoulderRidingEntityMixin"
         )
     }
 }

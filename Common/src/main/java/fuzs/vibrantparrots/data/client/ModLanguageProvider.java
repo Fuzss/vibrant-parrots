@@ -2,6 +2,7 @@ package fuzs.vibrantparrots.data.client;
 
 import fuzs.puzzleslib.api.client.data.v2.AbstractLanguageProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
+import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.init.ModRegistry;
 import net.minecraft.core.Holder;
 
@@ -15,7 +16,24 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
 
     @Override
     public void addTranslations(TranslationBuilder translationBuilder) {
-
+        translationBuilder.add(ModRegistry.CREATIVE_MODE_TAB.value(), VibrantParrots.MOD_NAME);
+        translationBuilder.add(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), "Parrot Egg");
+        translationBuilder.add(ModRegistry.WHITE_PARROT_EGG_ITEM.value(), "White Parrot Egg");
+        translationBuilder.add(ModRegistry.ORANGE_PARROT_EGG_ITEM.value(), "Orange Parrot Egg");
+        translationBuilder.add(ModRegistry.MAGENTA_PARROT_EGG_ITEM.value(), "Magenta Parrot Egg");
+        translationBuilder.add(ModRegistry.LIGHT_BLUE_PARROT_EGG_ITEM.value(), "Light Blue Parrot Egg");
+        translationBuilder.add(ModRegistry.YELLOW_PARROT_EGG_ITEM.value(), "Yellow Parrot Egg");
+        translationBuilder.add(ModRegistry.LIME_PARROT_EGG_ITEM.value(), "Lime Parrot Egg");
+        translationBuilder.add(ModRegistry.PINK_PARROT_EGG_ITEM.value(), "Pink Parrot Egg");
+        translationBuilder.add(ModRegistry.GRAY_PARROT_EGG_ITEM.value(), "Grey Parrot Egg");
+        translationBuilder.add(ModRegistry.LIGHT_GRAY_PARROT_EGG_ITEM.value(), "Light Grey Parrot Egg");
+        translationBuilder.add(ModRegistry.CYAN_PARROT_EGG_ITEM.value(), "Cyan Parrot Egg");
+        translationBuilder.add(ModRegistry.PURPLE_PARROT_EGG_ITEM.value(), "Purple Parrot Egg");
+        translationBuilder.add(ModRegistry.BLUE_PARROT_EGG_ITEM.value(), "Blue Parrot Egg");
+        translationBuilder.add(ModRegistry.BROWN_PARROT_EGG_ITEM.value(), "Brown Parrot Egg");
+        translationBuilder.add(ModRegistry.GREEN_PARROT_EGG_ITEM.value(), "Green Parrot Egg");
+        translationBuilder.add(ModRegistry.RED_PARROT_EGG_ITEM.value(), "Red Parrot Egg");
+        translationBuilder.add(ModRegistry.BLACK_PARROT_EGG_ITEM.value(), "Black Parrot Egg");
     }
 
     @Override

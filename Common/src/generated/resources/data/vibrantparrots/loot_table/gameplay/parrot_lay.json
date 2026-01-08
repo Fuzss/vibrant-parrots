@@ -1,0 +1,257 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:white"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:white_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:orange"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:orange_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:magenta"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:magenta_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "yellow_blue"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:light_blue_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:yellow"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:yellow_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "green"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:lime_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:pink"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:pink_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:gray"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:gray_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "gray"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:light_gray_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:cyan"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:cyan_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:purple"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:purple_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "blue"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:blue_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:brown"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:brown_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:green"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:green_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "red_blue"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:red_parrot_egg"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "entity": "this",
+                  "predicate": {
+                    "components": {
+                      "vibrantparrots:parrot/variant": "vibrantparrots:black"
+                    }
+                  }
+                }
+              ],
+              "name": "vibrantparrots:black_parrot_egg"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "vibrantparrots:gameplay/parrot_lay"
+}
