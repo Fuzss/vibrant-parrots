@@ -1,7 +1,11 @@
 package fuzs.vibrantparrots.init;
 
+import fuzs.puzzleslib.api.attachment.v4.DataAttachmentRegistry;
+import fuzs.puzzleslib.api.attachment.v4.DataAttachmentType;
+import fuzs.puzzleslib.api.core.v1.ModLoaderEnvironment;
 import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
+import fuzs.puzzleslib.api.network.v4.PlayerSet;
 import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ModParrot;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
@@ -10,13 +14,18 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.Item;
+
+import java.util.Optional;
+import java.util.function.Function;
 
 public class ModRegistry {
     public static final ResourceKey<Registry<ParrotVariant>> PARROT_VARIANT_REGISTRY = ResourceKey.createRegistryKey(
@@ -47,6 +56,21 @@ public class ModRegistry {
 
     static final TagFactory TAGS = TagFactory.make(VibrantParrots.MOD_ID);
     public static final TagKey<Item> PARROT_FOOD_ITEM_TAG = TAGS.registerItemTag("parrot_food");
+
+    public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
+            .defaultValue(EntityType.PLAYER, Optional.empty())
+            .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional),
+                    // Do not sync to players to bypass this bug in Fabric: https://github.com/FabricMC/fabric-api/issues/4943
+                    ModLoaderEnvironment.INSTANCE.getModLoader().isFabric() ?
+                            (Entity entity) -> Function.identity()::apply : PlayerSet::nearEntity)
+            .build(VibrantParrots.id("left_shoulder_parrot"));
+    public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
+            .defaultValue(EntityType.PLAYER, Optional.empty())
+            .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional),
+                    // Do not sync to players to bypass this bug in Fabric: https://github.com/FabricMC/fabric-api/issues/4943
+                    ModLoaderEnvironment.INSTANCE.getModLoader().isFabric() ?
+                            (Entity entity) -> Function.identity()::apply : PlayerSet::nearEntity)
+            .build(VibrantParrots.id("right_shoulder_parrot"));
 
     public static void bootstrap() {
         // NO-OP

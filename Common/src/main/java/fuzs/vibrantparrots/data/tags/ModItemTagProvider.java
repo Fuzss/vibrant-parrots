@@ -16,6 +16,6 @@ public class ModItemTagProvider extends AbstractTagProvider<Item> {
 
     @Override
     public void addTags(HolderLookup.Provider registries) {
-        this.tag(ModRegistry.PARROT_FOOD_ITEM_TAG).add(Items.MELON_SLICE);
+        this.tag(ModRegistry.PARROT_FOOD_ITEM_TAG).add(Items.GLISTERING_MELON_SLICE);
     }
 }

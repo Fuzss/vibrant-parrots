@@ -43,7 +43,9 @@ public class VibrantParrots implements ModConstructor {
 
     @Override
     public void onRegisterDataPackRegistries(DataPackRegistriesContext context) {
-        context.registerSyncedRegistry(ModRegistry.PARROT_VARIANT_REGISTRY, ParrotVariant.DIRECT_CODEC);
+        context.registerSyncedRegistry(ModRegistry.PARROT_VARIANT_REGISTRY,
+                ParrotVariant.DIRECT_CODEC,
+                ParrotVariant.NETWORK_CODEC);
     }
 
     public static Identifier id(String path) {

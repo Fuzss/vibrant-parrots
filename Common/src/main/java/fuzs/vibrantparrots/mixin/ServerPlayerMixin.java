@@ -4,18 +4,35 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.authlib.GameProfile;
 import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.config.ServerConfig;
+import fuzs.vibrantparrots.init.ModRegistry;
+import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
 abstract class ServerPlayerMixin extends Player {
 
     public ServerPlayerMixin(Level level, GameProfile gameProfile) {
         super(level, gameProfile);
+    }
+
+    @Inject(method = "setEntityOnShoulder", at = @At("HEAD"), cancellable = true)
+    public void setEntityOnShoulder(CallbackInfoReturnable<Boolean> callback) {
+        if (!VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsWhenSneaking) {
+            return;
+        }
+
+        if (this.isSecondaryUseActive()) {
+            callback.setReturnValue(false);
+        }
     }
 
     @ModifyExpressionValue(method = "handleShoulderEntities",
@@ -37,6 +54,22 @@ abstract class ServerPlayerMixin extends Player {
                                     target = "Lnet/minecraft/world/entity/player/Abilities;flying:Z",
                                     opcode = Opcodes.GETFIELD))
     public boolean handleShoulderEntities$2(boolean flying) {
-        return VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsWhenSneaking && this.isCrouching();
+        if (!VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsWhenSneaking) {
+            return false;
+        }
+
+        return this.isCrouching();
+    }
+
+    @Inject(method = "setShoulderEntityLeft", at = @At("TAIL"))
+    protected void setShoulderEntityLeft(CompoundTag compoundTag, CallbackInfo callback) {
+        ModRegistry.LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE.set(this,
+                ParrotVariant.extractParrotVariant(this, compoundTag));
+    }
+
+    @Inject(method = "setShoulderEntityRight", at = @At("TAIL"))
+    protected void setShoulderEntityRight(CompoundTag compoundTag, CallbackInfo callback) {
+        ModRegistry.RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE.set(this,
+                ParrotVariant.extractParrotVariant(this, compoundTag));
     }
 }
