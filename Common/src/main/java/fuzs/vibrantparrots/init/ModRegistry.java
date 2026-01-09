@@ -22,6 +22,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -174,6 +175,10 @@ public class ModRegistry {
                     ModLoaderEnvironment.INSTANCE.getModLoader().isFabric() ?
                             (Entity entity) -> Function.identity()::apply : PlayerSet::nearEntity)
             .build(VibrantParrots.id("right_shoulder_parrot"));
+    public static final DataAttachmentType<Entity, Optional<Integer>> EGG_LAY_TIME_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Integer>>entityBuilder()
+            .defaultValue(EntityType.PARROT, Optional.empty())
+            .persistent(ExtraCodecs.optionalEmptyMap(ExtraCodecs.NON_NEGATIVE_INT))
+            .build(VibrantParrots.id(ModParrot.TAG_EGG_LAY_TIME));
 
     public static void bootstrap() {
         // NO-OP

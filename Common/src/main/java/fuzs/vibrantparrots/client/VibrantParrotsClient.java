@@ -7,11 +7,13 @@ import fuzs.puzzleslib.api.client.event.v1.renderer.AddLivingEntityRenderLayersC
 import fuzs.puzzleslib.api.client.event.v1.renderer.ExtractRenderStateCallback;
 import fuzs.vibrantparrots.client.model.geom.ModModelLayers;
 import fuzs.vibrantparrots.client.renderer.entity.ModParrotRenderer;
+import fuzs.vibrantparrots.client.renderer.entity.VanillaParrotRenderer;
 import fuzs.vibrantparrots.client.renderer.entity.layers.ModParrotOnShoulderLayer;
 import fuzs.vibrantparrots.init.ModRegistry;
 import net.minecraft.client.model.animal.parrot.ParrotModel;
 import net.minecraft.client.model.geom.builders.MeshTransformer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.entity.EntityType;
 
 public class VibrantParrotsClient implements ClientModConstructor {
 
@@ -27,6 +29,7 @@ public class VibrantParrotsClient implements ClientModConstructor {
 
     @Override
     public void onRegisterEntityRenderers(EntityRenderersContext context) {
+        context.registerEntityRenderer(EntityType.PARROT, VanillaParrotRenderer::new);
         context.registerEntityRenderer(ModRegistry.PARROT_ENTITY_TYPE.value(), ModParrotRenderer::new);
         context.registerEntityRenderer(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), ThrownItemRenderer::new);
     }

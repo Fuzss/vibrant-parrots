@@ -7,7 +7,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -44,9 +43,9 @@ public class ModParrot extends Parrot {
     private static final EntityDataAccessor<Holder<ParrotVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(
             ModParrot.class,
             ModRegistry.PARROT_VARIANT_ENTITY_DATA_SERIALIZER.value());
-    private static final String TAG_EGG_LAY_TIME = "egg_lay_time";
-    private static final UniformInt EGG_LAY_TIME = TimeUtil.rangeOfSeconds(600, 1200);
-    private static final int DEFAULT_EGG_LAY_TIME = -1;
+    public static final String TAG_EGG_LAY_TIME = "egg_lay_time";
+    public static final UniformInt EGG_LAY_TIME = TimeUtil.rangeOfSeconds(600, 1200);
+    public static final int DEFAULT_EGG_LAY_TIME = -1;
 
     private int eggTime = DEFAULT_EGG_LAY_TIME;
 
@@ -63,29 +62,33 @@ public class ModParrot extends Parrot {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.removeAllGoals((Goal goal) -> goal instanceof LandOnOwnersShoulderGoal);
-        this.goalSelector.addGoal(3, new LandOnOwnersShoulderGoal(this) {
-            @Override
-            public boolean canUse() {
-                return super.canUse() && !ModParrot.this.isBaby();
-            }
-        });
-        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0) {
+        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0, Parrot.class) {
             @Override
             public boolean canUse() {
                 return super.canUse() && !ModParrot.this.hasEgg();
             }
         });
-        this.goalSelector.addGoal(1, new TemptGoal(this, 1.0, this::isFood, false) {
+        registerGoals(this);
+    }
+
+    public static void registerGoals(Parrot parrot) {
+        parrot.goalSelector.removeAllGoals((Goal goal) -> goal instanceof LandOnOwnersShoulderGoal);
+        parrot.goalSelector.addGoal(3, new LandOnOwnersShoulderGoal(parrot) {
             @Override
             public boolean canUse() {
-                return super.canUse() && !ModParrot.this.isOrderedToSit();
+                return super.canUse() && !parrot.isBaby();
             }
         });
-        this.goalSelector.addGoal(1, new FollowParentGoal(this, 1.1) {
+        parrot.goalSelector.addGoal(1, new TemptGoal(parrot, 1.0, parrot::isFood, false) {
             @Override
             public boolean canUse() {
-                return super.canUse() && !ModParrot.this.isOrderedToSit();
+                return super.canUse() && !parrot.isOrderedToSit();
+            }
+        });
+        parrot.goalSelector.addGoal(1, new FollowParentGoal(parrot, 1.1) {
+            @Override
+            public boolean canUse() {
+                return super.canUse() && !parrot.isOrderedToSit();
             }
         });
     }
@@ -99,40 +102,45 @@ public class ModParrot extends Parrot {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
+        InteractionResult interactionResult = mobInteract(this, player, interactionHand);
+        return interactionResult != null ? interactionResult : super.mobInteract(player, interactionHand);
+    }
+
+    public static @Nullable InteractionResult mobInteract(Parrot parrot, Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        if (this.isTame() && this.isFood(itemStack) && !itemStack.is(ItemTags.PARROT_POISONOUS_FOOD)) {
-            if (this.isBaby() || this.getAge() == DEFAULT_AGE && this.canFallInLove()) {
-                return this.animalInteract(player, interactionHand);
+        if (parrot.isTame() && parrot.isFood(itemStack) && !itemStack.is(ItemTags.PARROT_POISONOUS_FOOD)) {
+            if (parrot.isBaby() || parrot.getAge() == DEFAULT_AGE && parrot.canFallInLove()) {
+                return animalInteract(parrot, player, interactionHand);
             }
         }
 
-        return super.mobInteract(player, interactionHand);
+        return null;
     }
 
     /**
      * @see Animal#mobInteract(Player, InteractionHand)
      */
-    private InteractionResult animalInteract(Player player, InteractionHand interactionHand) {
+    private static InteractionResult animalInteract(Parrot parrot, Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        if (this.isFood(itemStack)) {
-            int age = this.getAge();
+        if (parrot.isFood(itemStack)) {
+            int age = parrot.getAge();
             if (player instanceof ServerPlayer serverPlayer) {
-                if (age == 0 && this.canFallInLove()) {
-                    this.usePlayerItem(player, interactionHand, itemStack);
-                    this.setInLove(serverPlayer);
-                    this.playEatingSound();
+                if (age == 0 && parrot.canFallInLove()) {
+                    parrot.usePlayerItem(player, interactionHand, itemStack);
+                    parrot.setInLove(serverPlayer);
+                    parrot.playEatingSound();
                     return InteractionResult.SUCCESS_SERVER;
                 }
             }
 
-            if (this.isBaby()) {
-                this.usePlayerItem(player, interactionHand, itemStack);
-                this.ageUp(getSpeedUpSecondsWhenFeeding(-age), true);
-                this.playEatingSound();
+            if (parrot.isBaby()) {
+                parrot.usePlayerItem(player, interactionHand, itemStack);
+                parrot.ageUp(getSpeedUpSecondsWhenFeeding(-age), true);
+                parrot.playEatingSound();
                 return InteractionResult.SUCCESS;
             }
 
-            if (this.level().isClientSide()) {
+            if (parrot.level().isClientSide()) {
                 return InteractionResult.CONSUME;
             }
         }
@@ -141,41 +149,22 @@ public class ModParrot extends Parrot {
     }
 
     @Override
-    public void tame(Player player) {
-        super.tame(player);
-        this.navigation.stop();
-        this.setOrderedToSit(true);
+    protected void customServerAiStep(ServerLevel serverLevel) {
+        super.customServerAiStep(serverLevel);
+        if (this.isAlive() && !this.isBaby() && this.isInSittingPose() && --this.eggTime == 0) {
+            layParrotEgg(this, serverLevel);
+        }
     }
 
     /**
-     * @see Animal#aiStep()
      * @see Chicken#aiStep()
      */
-    @Override
-    protected void customServerAiStep(ServerLevel serverLevel) {
-        super.customServerAiStep(serverLevel);
-        if (this.isInLove() && this.getInLoveTime() % 10 == 0) {
-            double d = this.random.nextGaussian() * 0.02;
-            double e = this.random.nextGaussian() * 0.02;
-            double f = this.random.nextGaussian() * 0.02;
-            serverLevel.sendParticles(ParticleTypes.HEART,
-                    this.getRandomX(1.0),
-                    this.getRandomY() + 0.5,
-                    this.getRandomZ(1.0),
-                    1,
-                    d,
-                    e,
-                    f,
-                    0.0);
-        }
-
-        if (this.isAlive() && !this.isBaby() && --this.eggTime == 0) {
-            if (this.dropFromGiftLootTable(serverLevel, ModRegistry.PARROT_LAY_LOOT_TABLE, this::spawnAtLocation)) {
-                this.playSound(SoundEvents.CHICKEN_EGG,
-                        1.0F,
-                        (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-                this.gameEvent(GameEvent.ENTITY_PLACE);
-            }
+    public static void layParrotEgg(Parrot parrot, ServerLevel serverLevel) {
+        if (parrot.dropFromGiftLootTable(serverLevel, ModRegistry.PARROT_LAY_LOOT_TABLE, parrot::spawnAtLocation)) {
+            parrot.playSound(SoundEvents.CHICKEN_EGG,
+                    1.0F,
+                    (parrot.getRandom().nextFloat() - parrot.getRandom().nextFloat()) * 0.2F + 1.0F);
+            parrot.gameEvent(GameEvent.ENTITY_PLACE);
         }
     }
 
@@ -230,23 +219,27 @@ public class ModParrot extends Parrot {
         return this.entityData.get(DATA_VARIANT_ID);
     }
 
+    @Override
+    public boolean canMate(Animal otherAnimal) {
+        return canMate(this, otherAnimal);
+    }
+
     /**
      * @see net.minecraft.world.entity.animal.wolf.Wolf#canMate(Animal)
      */
-    @Override
-    public boolean canMate(Animal otherAnimal) {
-        if (otherAnimal == this) {
-            return false;
-        } else if (!this.isTame()) {
-            return false;
-        } else if (!(otherAnimal instanceof ModParrot parrot)) {
+    public static boolean canMate(Parrot parrot, Animal otherAnimal) {
+        if (otherAnimal == parrot) {
             return false;
         } else if (!parrot.isTame()) {
             return false;
-        } else if (parrot.isInSittingPose()) {
+        } else if (!(otherAnimal instanceof Parrot otherParrot)) {
+            return false;
+        } else if (!otherParrot.isTame()) {
+            return false;
+        } else if (otherParrot.isInSittingPose()) {
             return false;
         } else {
-            return this.isInLove() && parrot.isInLove();
+            return parrot.isInLove() && otherParrot.isInLove();
         }
     }
 
