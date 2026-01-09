@@ -6,18 +6,13 @@ import fuzs.vibrantparrots.init.ModRegistry;
 import fuzs.vibrantparrots.world.entity.animal.parrot.VibrantParrot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.parrot.Parrot;
-import net.minecraft.world.level.gameevent.GameEvent;
 
-import java.util.OptionalInt;
 import java.util.Set;
 
 public class ParrotSpawningHandler {
-    private static final int EGG_DROP_TIME = 0;
     private static final int VANILLA_PARROT_VARIANTS = Parrot.Variant.values().length;
     private static final Set<EntitySpawnReason> VALID_SPAWN_REASONS = Set.of(EntitySpawnReason.NATURAL,
             EntitySpawnReason.CHUNK_GENERATION,
@@ -44,7 +39,7 @@ public class ParrotSpawningHandler {
         return EventResult.PASS;
     }
 
-    private static boolean getSpawnAsCustomEntityOdds(ServerLevel serverLevel) {
+    public static boolean getSpawnAsCustomEntityOdds(ServerLevel serverLevel) {
         int parrotVariants = serverLevel.registryAccess().lookupOrThrow(ModRegistry.PARROT_VARIANT_REGISTRY).size();
         return serverLevel.getRandom().nextFloat() < parrotVariants / (float) (parrotVariants
                 + VANILLA_PARROT_VARIANTS);
@@ -55,32 +50,5 @@ public class ParrotSpawningHandler {
                 serverLevel.getDayTime(),
                 0L,
                 serverLevel.getMoonBrightness(blockPos));
-    }
-
-    public static void tickEggLayTime(Parrot parrot, ServerLevel serverLevel) {
-        if (parrot.isAlive() && !parrot.isBaby() && parrot.isInSittingPose()) {
-            ModRegistry.EGG_LAY_TIME_ATTACHMENT_TYPE.getOrDefault(parrot, OptionalInt.empty())
-                    .ifPresent((int eggLayTime) -> {
-                        eggLayTime = tickEggLayTime(parrot, serverLevel, eggLayTime);
-                        ModRegistry.EGG_LAY_TIME_ATTACHMENT_TYPE.set(parrot,
-                                eggLayTime > EGG_DROP_TIME ? OptionalInt.of(eggLayTime) : OptionalInt.empty());
-                    });
-        }
-    }
-
-    /**
-     * @see Chicken#aiStep()
-     */
-    private static int tickEggLayTime(Parrot parrot, ServerLevel serverLevel, int eggLayTime) {
-        if (--eggLayTime == EGG_DROP_TIME) {
-            if (parrot.dropFromGiftLootTable(serverLevel, ModRegistry.PARROT_LAY_LOOT_TABLE, parrot::spawnAtLocation)) {
-                parrot.playSound(SoundEvents.CHICKEN_EGG,
-                        1.0F,
-                        (parrot.getRandom().nextFloat() - parrot.getRandom().nextFloat()) * 0.2F + 1.0F);
-                parrot.gameEvent(GameEvent.ENTITY_PLACE);
-            }
-        }
-
-        return eggLayTime;
     }
 }

@@ -1,26 +1,30 @@
 package fuzs.vibrantparrots.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
 import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.config.ServerConfig;
-import fuzs.vibrantparrots.handler.ParrotSpawningHandler;
+import fuzs.vibrantparrots.handler.ParrotBehaviorHandler;
 import fuzs.vibrantparrots.init.ModRegistry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.animal.parrot.ShoulderRidingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,10 +33,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Optional;
 import java.util.OptionalInt;
 
 @Mixin(Parrot.class)
-abstract class ParrotMixin extends ShoulderRidingEntity {
+abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
 
     protected ParrotMixin(EntityType<? extends ShoulderRidingEntity> entityType, Level level) {
         super(entityType, level);
@@ -73,7 +78,7 @@ abstract class ParrotMixin extends ShoulderRidingEntity {
     @Inject(method = "aiStep", at = @At("TAIL"))
     public void aiStep(CallbackInfo callback) {
         if (this.level() instanceof ServerLevel serverLevel) {
-            ParrotSpawningHandler.tickEggLayTime(Parrot.class.cast(this), serverLevel);
+            ParrotBehaviorHandler.tickEggLayTime(Parrot.class.cast(this), serverLevel);
         }
     }
 
@@ -85,7 +90,8 @@ abstract class ParrotMixin extends ShoulderRidingEntity {
     @Inject(method = "mobInteract",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/parrot/Parrot;isFlying()Z"),
             cancellable = true)
-    public void mobInteract(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> callback, @Local ItemStack itemInHand) {
+    public void mobInteract$1(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> callback) {
+        ItemStack itemInHand = player.getItemInHand(interactionHand);
         if (this.isFood(itemInHand)) {
             if (this.isTame() && (this.isBaby() || this.getAge() == DEFAULT_AGE && this.canFallInLove())) {
                 callback.setReturnValue(super.mobInteract(player, interactionHand));
@@ -144,4 +150,56 @@ abstract class ParrotMixin extends ShoulderRidingEntity {
 
     @Shadow
     public abstract Parrot.Variant getVariant();
+
+    @Override
+    public boolean fromBucket() {
+        return false;
+    }
+
+    @Override
+    public void setFromBucket(boolean fromBucket) {
+        // NO-OP
+    }
+
+    /**
+     * @see TamableAnimal#addAdditionalSaveData(ValueOutput)
+     */
+    @Override
+    public void saveToBucketTag(ItemStack itemStack) {
+        Bucketable.saveDefaultDataToBucketTag(this, itemStack);
+        itemStack.set(ModRegistry.ENTITY_TYPE_DATA_COMPONENT_TYPE.value(), this.getType());
+        itemStack.copyFrom(DataComponents.PARROT_VARIANT, this);
+        // Just add the custom parrot component here as well, so we do not have to mess with the patched-in interface in the actual mob class.
+        itemStack.copyFrom(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), this);
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, itemStack, (CompoundTag compoundTag) -> {
+            compoundTag.putInt("Age", this.getAge());
+            compoundTag.storeNullable("Owner", EntityReference.codec(), this.getOwnerReference());
+        });
+    }
+
+    /**
+     * @see TamableAnimal#readAdditionalSaveData(ValueInput)
+     */
+    @Override
+    public void loadFromBucketTag(CompoundTag compoundTag) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compoundTag);
+        this.setAge(compoundTag.getIntOr("Age", DEFAULT_AGE));
+        Optional<EntityReference<LivingEntity>> optional = compoundTag.read("Owner", EntityReference.codec());
+        if (optional.isPresent()) {
+            this.setOwnerReference(optional.get());
+            this.setTame(true, false);
+        } else {
+            this.setTame(false, true);
+        }
+    }
+
+    @Override
+    public ItemStack getBucketItemStack() {
+        return new ItemStack(ModRegistry.PARROT_CAGE_ITEM);
+    }
+
+    @Override
+    public SoundEvent getPickupSound() {
+        return SoundEvents.CHAIN_PLACE;
+    }
 }

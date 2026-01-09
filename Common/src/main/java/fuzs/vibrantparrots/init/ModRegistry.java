@@ -12,11 +12,13 @@ import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
 import fuzs.vibrantparrots.world.entity.animal.parrot.VibrantParrot;
 import fuzs.vibrantparrots.world.entity.projectile.throwableitemprojectile.ThrownParrotEgg;
+import fuzs.vibrantparrots.world.item.ParrotCageItem;
 import fuzs.vibrantparrots.world.item.ParrotEggItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -31,6 +33,7 @@ import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.Optional;
@@ -51,6 +54,14 @@ public class ModRegistry {
                                 EitherHolder.codec(PARROT_VARIANT_REGISTRY, ParrotVariant.CODEC)))
                         .networkSynchronized(ByteBufCodecs.either(Parrot.Variant.STREAM_CODEC,
                                 EitherHolder.streamCodec(PARROT_VARIANT_REGISTRY, ParrotVariant.STREAM_CODEC)));
+            });
+    /**
+     * @see DataComponents#ENTITY_DATA
+     */
+    public static final Holder.Reference<DataComponentType<EntityType<?>>> ENTITY_TYPE_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
+            "entity_type",
+            (DataComponentType.Builder<EntityType<?>> builder) -> {
+                return builder.persistent(EntityType.CODEC);
             });
     public static final Holder.Reference<EntityDataSerializer<Holder<ParrotVariant>>> PARROT_VARIANT_ENTITY_DATA_SERIALIZER = REGISTRIES.registerEntityDataSerializer(
             "parrot/variant",
@@ -82,115 +93,60 @@ public class ModRegistry {
                         .clientTrackingRange(4)
                         .updateInterval(10);
             });
+    public static final Holder.Reference<Item> BIRD_CAGE_ITEM = REGISTRIES.registerItem("bird_cage",
+            () -> new Item.Properties().stacksTo(16));
+    public static final Holder.Reference<Item> PARROT_CAGE_ITEM = REGISTRIES.whenOnFabricLike()
+            .registerItem("parrot_cage", ParrotCageItem::new, ModRegistry::parrotCageProperties);
     public static final Holder.Reference<Item> WHITE_PARROT_EGG_ITEM = REGISTRIES.registerItem("white_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.WHITE)));
-            });
+            () -> parrotEggProperties(ParrotVariants.WHITE));
     public static final Holder.Reference<Item> ORANGE_PARROT_EGG_ITEM = REGISTRIES.registerItem("orange_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.ORANGE)));
-            });
+            () -> parrotEggProperties(ParrotVariants.ORANGE));
     public static final Holder.Reference<Item> MAGENTA_PARROT_EGG_ITEM = REGISTRIES.registerItem("magenta_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.MAGENTA)));
-            });
+            () -> parrotEggProperties(ParrotVariants.MAGENTA));
     public static final Holder.Reference<Item> LIGHT_BLUE_PARROT_EGG_ITEM = REGISTRIES.registerItem(
             "light_blue_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), Either.left(Parrot.Variant.YELLOW_BLUE));
-            });
+            () -> parrotEggProperties(Parrot.Variant.YELLOW_BLUE));
     public static final Holder.Reference<Item> YELLOW_PARROT_EGG_ITEM = REGISTRIES.registerItem("yellow_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.YELLOW)));
-            });
+            () -> parrotEggProperties(ParrotVariants.YELLOW));
     public static final Holder.Reference<Item> LIME_PARROT_EGG_ITEM = REGISTRIES.registerItem("lime_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), Either.left(Parrot.Variant.GREEN));
-            });
+            () -> parrotEggProperties(Parrot.Variant.GREEN));
     public static final Holder.Reference<Item> PINK_PARROT_EGG_ITEM = REGISTRIES.registerItem("pink_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.PINK)));
-            });
+            () -> parrotEggProperties(ParrotVariants.PINK));
     public static final Holder.Reference<Item> GRAY_PARROT_EGG_ITEM = REGISTRIES.registerItem("gray_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.GRAY)));
-            });
+            () -> parrotEggProperties(ParrotVariants.GRAY));
     public static final Holder.Reference<Item> LIGHT_GRAY_PARROT_EGG_ITEM = REGISTRIES.registerItem(
             "light_gray_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), Either.left(Parrot.Variant.GRAY));
-            });
+            () -> parrotEggProperties(Parrot.Variant.GRAY));
     public static final Holder.Reference<Item> CYAN_PARROT_EGG_ITEM = REGISTRIES.registerItem("cyan_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.CYAN)));
-            });
+            () -> parrotEggProperties(ParrotVariants.CYAN));
     public static final Holder.Reference<Item> PURPLE_PARROT_EGG_ITEM = REGISTRIES.registerItem("purple_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.PURPLE)));
-            });
+            () -> parrotEggProperties(ParrotVariants.PURPLE));
     public static final Holder.Reference<Item> BLUE_PARROT_EGG_ITEM = REGISTRIES.registerItem("blue_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), Either.left(Parrot.Variant.BLUE));
-            });
+            () -> parrotEggProperties(Parrot.Variant.BLUE));
     public static final Holder.Reference<Item> BROWN_PARROT_EGG_ITEM = REGISTRIES.registerItem("brown_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.BROWN)));
-            });
+            () -> parrotEggProperties(ParrotVariants.BROWN));
     public static final Holder.Reference<Item> GREEN_PARROT_EGG_ITEM = REGISTRIES.registerItem("green_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.GREEN)));
-            });
+            () -> parrotEggProperties(ParrotVariants.GREEN));
     public static final Holder.Reference<Item> RED_PARROT_EGG_ITEM = REGISTRIES.registerItem("red_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), Either.left(Parrot.Variant.RED_BLUE));
-            });
+            () -> parrotEggProperties(Parrot.Variant.RED_BLUE));
     public static final Holder.Reference<Item> BLACK_PARROT_EGG_ITEM = REGISTRIES.registerItem("black_parrot_egg",
             ParrotEggItem::new,
-            () -> {
-                return new Item.Properties().stacksTo(16)
-                        .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                Either.right(new EitherHolder<>(ParrotVariants.BLACK)));
-            });
+            () -> parrotEggProperties(ParrotVariants.BLACK));
     public static final Holder.Reference<CreativeModeTab> CREATIVE_MODE_TAB = REGISTRIES.registerCreativeModeTab(
             WHITE_PARROT_EGG_ITEM);
     public static final ResourceKey<LootTable> PARROT_LAY_LOOT_TABLE = REGISTRIES.registerLootTable(
@@ -230,5 +186,21 @@ public class ModRegistry {
 
     public static void bootstrap() {
         // NO-OP
+    }
+
+    public static Item.Properties parrotCageProperties() {
+        return new Item.Properties().stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY);
+    }
+
+    private static Item.Properties parrotEggProperties(ResourceKey<ParrotVariant> parrotVariant) {
+        return parrotEggProperties(Either.right(new EitherHolder<>(parrotVariant)));
+    }
+
+    private static Item.Properties parrotEggProperties(Parrot.Variant parrotVariant) {
+        return parrotEggProperties(Either.left(parrotVariant));
+    }
+
+    private static Item.Properties parrotEggProperties(Either<Parrot.Variant, EitherHolder<ParrotVariant>> parrotVariant) {
+        return new Item.Properties().stacksTo(16).component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), parrotVariant);
     }
 }

@@ -97,8 +97,13 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
         if (mob != null) {
             mob.setAge(AgeableMob.BABY_START_AGE);
             mob.snapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-            // We do not copy the owner from egg to parrot, as it does not sync to the client, making it useless.
-            // Any interactions with the spawned parrot will try to tame it client-side, while to server actually increases its age.
+            if (this.owner != null) {
+                mob.setOwnerReference(EntityReference.of(this.owner.getUUID()));
+                mob.setTame(true, false);
+            } else {
+                mob.setTame(false, true);
+            }
+
             mobConsumer.accept(mob);
             if (mob.fudgePositionAfterSizeChange(ZERO_SIZED_DIMENSIONS)) {
                 serverLevel.addFreshEntity(mob);
