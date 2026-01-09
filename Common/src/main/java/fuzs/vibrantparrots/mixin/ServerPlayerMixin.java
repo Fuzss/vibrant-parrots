@@ -40,13 +40,21 @@ abstract class ServerPlayerMixin extends Player {
                                     target = "Lnet/minecraft/server/level/ServerPlayer;fallDistance:D",
                                     opcode = Opcodes.GETFIELD))
     public double handleShoulderEntities$0(double fallDistance) {
-        return 0.0;
+        if (!VibrantParrots.CONFIG.get(ServerConfig.class).parrotsStayWhenFalling) {
+            return fallDistance;
+        } else {
+            return 0.0;
+        }
     }
 
     @ModifyExpressionValue(method = "handleShoulderEntities",
                            at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isInWater()Z"))
     public boolean handleShoulderEntities$1(boolean isInWater) {
-        return isInWater && !this.isInShallowWater();
+        if (!VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsOnlyWhenSubmerged) {
+            return isInWater;
+        } else {
+            return isInWater && !this.isInShallowWater();
+        }
     }
 
     @ModifyExpressionValue(method = "handleShoulderEntities",
@@ -54,11 +62,22 @@ abstract class ServerPlayerMixin extends Player {
                                     target = "Lnet/minecraft/world/entity/player/Abilities;flying:Z",
                                     opcode = Opcodes.GETFIELD))
     public boolean handleShoulderEntities$2(boolean flying) {
-        if (!VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsWhenSneaking) {
-            return false;
+        if (!VibrantParrots.CONFIG.get(ServerConfig.class).parrotsStayWhenFlying) {
+            return flying;
         }
 
-        return this.isCrouching();
+        return false;
+    }
+
+    @Inject(method = "handleShoulderEntities", at = @At("TAIL"))
+    public void handleShoulderEntities$3(CallbackInfo callback) {
+        if (!VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsWhenSneaking) {
+            return;
+        }
+
+        if (this.isCrouching()) {
+            this.removeEntitiesOnShoulder();
+        }
     }
 
     @Inject(method = "setShoulderEntityLeft", at = @At("TAIL"))

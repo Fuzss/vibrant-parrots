@@ -5,11 +5,9 @@ import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.api.core.v1.context.DataPackRegistriesContext;
 import fuzs.puzzleslib.api.core.v1.context.EntityAttributesContext;
 import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
-import fuzs.puzzleslib.api.event.v1.entity.EntityTickEvents;
 import fuzs.puzzleslib.api.event.v1.entity.ServerEntityLevelEvents;
-import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.vibrantparrots.config.ServerConfig;
-import fuzs.vibrantparrots.handler.ParrotEggHandler;
+import fuzs.vibrantparrots.handler.ParrotSpawningHandler;
 import fuzs.vibrantparrots.init.ModRegistry;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
 import net.minecraft.resources.Identifier;
@@ -34,9 +32,7 @@ public class VibrantParrots implements ModConstructor {
     }
 
     private static void registerEventHandlers() {
-        ServerEntityLevelEvents.LOAD.register(ParrotEggHandler::onEntityLoad);
-        EntityTickEvents.END.register(ParrotEggHandler::onEndEntityTick);
-        PlayerInteractEvents.USE_ENTITY.register(ParrotEggHandler::onUseEntity);
+        ServerEntityLevelEvents.LOAD.register(ParrotSpawningHandler::onEntityLoad);
     }
 
     @Override

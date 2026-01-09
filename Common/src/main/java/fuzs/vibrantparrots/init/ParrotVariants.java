@@ -18,6 +18,7 @@ public class ParrotVariants {
     public static final ResourceKey<ParrotVariant> BROWN = register("brown");
     public static final ResourceKey<ParrotVariant> GREEN = register("green");
     public static final ResourceKey<ParrotVariant> BLACK = register("black");
+    public static final ResourceKey<ParrotVariant> DEFAULT = WHITE;
 
     private static ResourceKey<ParrotVariant> register(String path) {
         return ModRegistry.REGISTRIES.makeResourceKey(ModRegistry.PARROT_VARIANT_REGISTRY, path);

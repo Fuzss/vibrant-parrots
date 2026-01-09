@@ -2,8 +2,8 @@ package fuzs.vibrantparrots.world.entity.projectile.throwableitemprojectile;
 
 import com.mojang.datafixers.util.Either;
 import fuzs.vibrantparrots.init.ModRegistry;
-import fuzs.vibrantparrots.world.entity.animal.parrot.ModParrot;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
+import fuzs.vibrantparrots.world.entity.animal.parrot.VibrantParrot;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -75,13 +75,15 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
                     .get(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value());
             if (either != null) {
                 either.ifLeft((Parrot.Variant variant) -> {
-                    this.spawnEggInhabitant(serverLevel, EntityType.PARROT, (Parrot parrot) -> {
+                    this.spawnParrotChick(serverLevel, EntityType.PARROT, (Parrot parrot) -> {
                         parrot.setComponent(DataComponents.PARROT_VARIANT, variant);
                     });
                 }).ifRight((EitherHolder<ParrotVariant> holder) -> {
-                    this.spawnEggInhabitant(serverLevel, ModRegistry.PARROT_ENTITY_TYPE.value(), (ModParrot parrot) -> {
-                        holder.unwrap(this.registryAccess()).ifPresent(parrot::setParrotVariant);
-                    });
+                    this.spawnParrotChick(serverLevel,
+                            ModRegistry.PARROT_ENTITY_TYPE.value(),
+                            (VibrantParrot parrot) -> {
+                                holder.unwrap(this.registryAccess()).ifPresent(parrot::setParrotVariant);
+                            });
                 });
             }
 
@@ -90,15 +92,13 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
         }
     }
 
-    protected <T extends TamableAnimal> void spawnEggInhabitant(ServerLevel serverLevel, EntityType<T> entityType, Consumer<T> mobConsumer) {
+    protected <T extends TamableAnimal> void spawnParrotChick(ServerLevel serverLevel, EntityType<T> entityType, Consumer<T> mobConsumer) {
         T mob = entityType.create(this.level(), EntitySpawnReason.TRIGGERED);
         if (mob != null) {
             mob.setAge(AgeableMob.BABY_START_AGE);
             mob.snapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-            if (this.getOwner() instanceof LivingEntity livingEntity) {
-                mob.setOwner(livingEntity);
-            }
-
+            // We do not copy the owner from egg to parrot, as it does not sync to the client, making it useless.
+            // Any interactions with the spawned parrot will try to tame it client-side, while to server actually increases its age.
             mobConsumer.accept(mob);
             if (mob.fudgePositionAfterSizeChange(ZERO_SIZED_DIMENSIONS)) {
                 serverLevel.addFreshEntity(mob);

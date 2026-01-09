@@ -30,7 +30,7 @@ import java.util.Optional;
 /**
  * @see net.minecraft.client.renderer.entity.layers.ParrotOnShoulderLayer
  */
-public class ModParrotOnShoulderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
+public class VibrantParrotOnShoulderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     public static final ContextKey<Optional<Holder<ParrotVariant>>> PARROT_ON_LEFT_SHOULDER_KEY = new ContextKey<>(
             VibrantParrots.id("parrot_on_left_shoulder"));
     public static final ContextKey<Optional<Holder<ParrotVariant>>> PARROT_ON_RIGHT_SHOULDER_KEY = new ContextKey<>(
@@ -38,14 +38,14 @@ public class ModParrotOnShoulderLayer extends RenderLayer<AvatarRenderState, Pla
 
     private final ParrotModel model;
 
-    public ModParrotOnShoulderLayer(RenderLayerParent<AvatarRenderState, PlayerModel> renderer, EntityModelSet modelSet) {
+    public VibrantParrotOnShoulderLayer(RenderLayerParent<AvatarRenderState, PlayerModel> renderer, EntityModelSet modelSet) {
         super(renderer);
         this.model = new ParrotModel(modelSet.bakeLayer(ModModelLayers.PARROT));
     }
 
     public static void addLivingEntityRenderLayers(EntityType<?> entityType, LivingEntityRenderer<?, ?, ?> entityRenderer, EntityRendererProvider.Context context) {
         if (entityRenderer instanceof AvatarRenderer<?> avatarRenderer) {
-            avatarRenderer.addLayer(new ModParrotOnShoulderLayer(avatarRenderer, context.getModelSet()));
+            avatarRenderer.addLayer(new VibrantParrotOnShoulderLayer(avatarRenderer, context.getModelSet()));
         }
     }
 

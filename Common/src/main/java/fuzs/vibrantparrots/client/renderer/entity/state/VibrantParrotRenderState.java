@@ -4,7 +4,7 @@ import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
 import net.minecraft.client.renderer.entity.state.ParrotRenderState;
 import org.jspecify.annotations.Nullable;
 
-public class ModParrotRenderState extends ParrotRenderState {
+public class VibrantParrotRenderState extends ParrotRenderState {
     @Nullable
     public ParrotVariant variant;
 }

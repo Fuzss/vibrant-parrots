@@ -60,7 +60,7 @@
                   "entity": "this",
                   "predicate": {
                     "components": {
-                      "vibrantparrots:parrot/variant": "yellow_blue"
+                      "minecraft:parrot/variant": "yellow_blue"
                     }
                   }
                 }
@@ -90,7 +90,7 @@
                   "entity": "this",
                   "predicate": {
                     "components": {
-                      "vibrantparrots:parrot/variant": "green"
+                      "minecraft:parrot/variant": "green"
                     }
                   }
                 }
@@ -135,7 +135,7 @@
                   "entity": "this",
                   "predicate": {
                     "components": {
-                      "vibrantparrots:parrot/variant": "gray"
+                      "minecraft:parrot/variant": "gray"
                     }
                   }
                 }
@@ -180,7 +180,7 @@
                   "entity": "this",
                   "predicate": {
                     "components": {
-                      "vibrantparrots:parrot/variant": "blue"
+                      "minecraft:parrot/variant": "blue"
                     }
                   }
                 }
@@ -225,7 +225,7 @@
                   "entity": "this",
                   "predicate": {
                     "components": {
-                      "vibrantparrots:parrot/variant": "red_blue"
+                      "minecraft:parrot/variant": "red_blue"
                     }
                   }
                 }
