@@ -65,7 +65,7 @@ public class ParrotBehaviorHandler {
      */
     private static Optional<InteractionResult> bucketMobPickup(Player player, InteractionHand hand, LivingEntity entity, Bucketable bucketable) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.is(ModRegistry.BIRD_CAGE_ITEM) && entity.isAlive()) {
+        if (itemStack.is(ModRegistry.CAGE_ITEM) && entity.isAlive()) {
             entity.playSound(bucketable.getPickupSound(), 1.0F, 1.0F);
             ItemStack itemStack2 = bucketable.getBucketItemStack();
             bucketable.saveToBucketTag(itemStack2);

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "vibrantparrots:item/bird_cage"
+    "model": "vibrantparrots:item/cage"
   }
 }

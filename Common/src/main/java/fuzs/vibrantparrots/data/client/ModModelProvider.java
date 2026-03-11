@@ -14,7 +14,7 @@ public class ModModelProvider extends AbstractModelProvider {
 
     @Override
     public void addItemModels(ItemModelGenerators itemModelGenerators) {
-        itemModelGenerators.generateFlatItem(ModRegistry.BIRD_CAGE_ITEM.value(), ModelTemplates.FLAT_ITEM);
+        itemModelGenerators.generateFlatItem(ModRegistry.CAGE_ITEM.value(), ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModRegistry.PARROT_CAGE_ITEM.value(), ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModRegistry.WHITE_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModRegistry.ORANGE_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);

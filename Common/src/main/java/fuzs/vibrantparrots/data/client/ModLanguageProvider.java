@@ -18,7 +18,7 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
     public void addTranslations(TranslationBuilder translationBuilder) {
         translationBuilder.add(ModRegistry.CREATIVE_MODE_TAB.value(), VibrantParrots.MOD_NAME);
         translationBuilder.add(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), "Parrot Egg");
-        translationBuilder.add(ModRegistry.BIRD_CAGE_ITEM.value(), "Bird Cage");
+        translationBuilder.add(ModRegistry.CAGE_ITEM.value(), "Cage");
         translationBuilder.add(ModRegistry.PARROT_CAGE_ITEM.value(), "Parrot Cage");
         translationBuilder.add(ModRegistry.WHITE_PARROT_EGG_ITEM.value(), "White Parrot Egg");
         translationBuilder.add(ModRegistry.ORANGE_PARROT_EGG_ITEM.value(), "Orange Parrot Egg");
@@ -27,8 +27,8 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
         translationBuilder.add(ModRegistry.YELLOW_PARROT_EGG_ITEM.value(), "Yellow Parrot Egg");
         translationBuilder.add(ModRegistry.LIME_PARROT_EGG_ITEM.value(), "Lime Parrot Egg");
         translationBuilder.add(ModRegistry.PINK_PARROT_EGG_ITEM.value(), "Pink Parrot Egg");
-        translationBuilder.add(ModRegistry.GRAY_PARROT_EGG_ITEM.value(), "Grey Parrot Egg");
-        translationBuilder.add(ModRegistry.LIGHT_GRAY_PARROT_EGG_ITEM.value(), "Light Grey Parrot Egg");
+        translationBuilder.add(ModRegistry.GRAY_PARROT_EGG_ITEM.value(), "Gray Parrot Egg");
+        translationBuilder.add(ModRegistry.LIGHT_GRAY_PARROT_EGG_ITEM.value(), "Light Gray Parrot Egg");
         translationBuilder.add(ModRegistry.CYAN_PARROT_EGG_ITEM.value(), "Cyan Parrot Egg");
         translationBuilder.add(ModRegistry.PURPLE_PARROT_EGG_ITEM.value(), "Purple Parrot Egg");
         translationBuilder.add(ModRegistry.BLUE_PARROT_EGG_ITEM.value(), "Blue Parrot Egg");

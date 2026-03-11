@@ -1,8 +1,8 @@
-// 1.21.11	2026-01-09T16:15:49.185792	Model Definitions
-ef54a0af323468f03ba64315e4a5bc8e189c8615 assets/vibrantparrots/items/bird_cage.json
+// 1.21.11	2026-03-11T17:21:24.91029	Model Definitions
 34c22854e4e65f5daf8b34ffd17e1a5d2fe91b18 assets/vibrantparrots/items/black_parrot_egg.json
 d93f8a95c7da11b25ea39f6568b7c83f3e2266ce assets/vibrantparrots/items/blue_parrot_egg.json
 2a861922a21f8720f2f82d255314ea771d742fec assets/vibrantparrots/items/brown_parrot_egg.json
+324d205342301206f65dd2b0f9eaf8f01ceeb605 assets/vibrantparrots/items/cage.json
 566885d1282e3305d599c57a2cf0e81d78e05ded assets/vibrantparrots/items/cyan_parrot_egg.json
 e18295c1561714753b00eaf57d026eba68fd7fe3 assets/vibrantparrots/items/gray_parrot_egg.json
 13fb49d3ac78d658ffb0b1b6c0d9c48795a6e25c assets/vibrantparrots/items/green_parrot_egg.json
@@ -17,10 +17,10 @@ db6164ba5f6360d46004c041f02de1aac7ca582d assets/vibrantparrots/items/pink_parrot
 30ee969bd5a1dca26cf2d52fe7e7b72c537a8cac assets/vibrantparrots/items/red_parrot_egg.json
 64de7b75ad2c79cebbd69ec434e74772a3ecb31c assets/vibrantparrots/items/white_parrot_egg.json
 b612769982bd637a13bddd4e72afcb05b57b80d4 assets/vibrantparrots/items/yellow_parrot_egg.json
-5bc57b0856ca0c2f0e8b3eb9878da759646770a9 assets/vibrantparrots/models/item/bird_cage.json
 fb7d08a7aa50f437ab3ef6ab96fad15f519ae1b3 assets/vibrantparrots/models/item/black_parrot_egg.json
 cb48164c94c97fee35685c1104783e64913d6d89 assets/vibrantparrots/models/item/blue_parrot_egg.json
 cdd5dcc5576b5c0e7c336e613a419df6c90b022a assets/vibrantparrots/models/item/brown_parrot_egg.json
+f505fce580865e65fc8e3890cef15690a694453a assets/vibrantparrots/models/item/cage.json
 f4d14e8d422c2b491bc61cd2126dd1cb36dace92 assets/vibrantparrots/models/item/cyan_parrot_egg.json
 8721548d4d3867cf6fd15564d237cbb863c2dd39 assets/vibrantparrots/models/item/gray_parrot_egg.json
 7bd902b13d3a1ad4c25e6fdec5ed7e7f8bb0e02d assets/vibrantparrots/models/item/green_parrot_egg.json
