@@ -1,6 +1,7 @@
 classTweaker    v2  official
 accessible  method  net/minecraft/world/entity/Mob  usePlayerItem   (Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)V
-accessible  method  net/minecraft/world/entity/animal/Animal    playEatingSound ()V
+accessible  method  net/minecraft/world/entity/animal/nautilus/AbstractNautilus usePlayerItem   (Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)V
+accessible  method  net/minecraft/world/entity/animal/axolotl/Axolotl   usePlayerItem   (Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)V
 accessible  field   net/minecraft/world/entity/ai/goal/BreedGoal    PARTNER_TARGETING   Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;
 accessible  field   net/minecraft/world/entity/ai/goal/BreedGoal    partnerClass    Ljava/lang/Class;
 extendable  method  net/minecraft/world/entity/ai/goal/BreedGoal    getFreePartner  ()Lnet/minecraft/world/entity/animal/Animal;

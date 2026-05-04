@@ -1,7 +1,7 @@
 package fuzs.vibrantparrots.handler;
 
-import fuzs.puzzleslib.api.event.v1.core.EventResult;
-import fuzs.puzzleslib.api.util.v1.EntityHelper;
+import fuzs.puzzleslib.common.api.event.v1.core.EventResult;
+import fuzs.puzzleslib.common.api.util.v1.EntityHelper;
 import fuzs.vibrantparrots.init.ModRegistry;
 import fuzs.vibrantparrots.world.entity.animal.parrot.VibrantParrot;
 import net.minecraft.core.BlockPos;
@@ -47,7 +47,7 @@ public class ParrotSpawningHandler {
 
     private static DifficultyInstance getCurrentDifficultyAt(ServerLevel serverLevel, BlockPos blockPos) {
         return new DifficultyInstance(serverLevel.getDifficulty(),
-                serverLevel.getDayTime(),
+                serverLevel.getOverworldClockTime(),
                 0L,
                 serverLevel.getMoonBrightness(blockPos));
     }

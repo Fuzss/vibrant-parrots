@@ -18,7 +18,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.variant.SpawnContext;
 import net.minecraft.world.entity.variant.VariantUtils;
-import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
@@ -89,8 +88,7 @@ public class VibrantParrot extends Parrot {
     @Override
     public <T> T get(DataComponentType<? extends T> component) {
         if (component == ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value()) {
-            return castComponentValue((DataComponentType<T>) component,
-                    Either.right(new EitherHolder<>(this.getParrotVariant())));
+            return castComponentValue((DataComponentType<T>) component, Either.right(this.getParrotVariant()));
         } else if (component == DataComponents.PARROT_VARIANT) {
             return null;
         } else {
@@ -108,9 +106,7 @@ public class VibrantParrot extends Parrot {
     protected <T> boolean applyImplicitComponent(DataComponentType<T> component, T value) {
         if (component == ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value()) {
             Optional<Holder<ParrotVariant>> optional = castComponentValue(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                    value).right().flatMap((EitherHolder<ParrotVariant> either) -> {
-                return either.unwrap(this.registryAccess());
-            });
+                    value).right();
             if (optional.isPresent()) {
                 this.setParrotVariant(optional.get());
                 return true;

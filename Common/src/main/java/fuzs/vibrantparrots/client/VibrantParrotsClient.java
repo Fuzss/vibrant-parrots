@@ -1,13 +1,13 @@
 package fuzs.vibrantparrots.client;
 
-import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
-import fuzs.puzzleslib.api.client.core.v1.context.EntityRenderersContext;
-import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
-import fuzs.puzzleslib.api.client.event.v1.renderer.AddLivingEntityRenderLayersCallback;
-import fuzs.puzzleslib.api.client.event.v1.renderer.ExtractRenderStateCallback;
+import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
+import fuzs.puzzleslib.common.api.client.core.v1.context.EntityRenderersContext;
+import fuzs.puzzleslib.common.api.client.core.v1.context.LayerDefinitionsContext;
+import fuzs.puzzleslib.common.api.client.event.v1.renderer.AddLivingEntityRenderLayersCallback;
+import fuzs.puzzleslib.common.api.client.event.v1.renderer.ExtractEntityRenderStateCallback;
 import fuzs.vibrantparrots.client.model.geom.ModModelLayers;
-import fuzs.vibrantparrots.client.renderer.entity.VibrantParrotRenderer;
 import fuzs.vibrantparrots.client.renderer.entity.VanillaParrotRenderer;
+import fuzs.vibrantparrots.client.renderer.entity.VibrantParrotRenderer;
 import fuzs.vibrantparrots.client.renderer.entity.layers.VibrantParrotOnShoulderLayer;
 import fuzs.vibrantparrots.init.ModRegistry;
 import net.minecraft.client.model.animal.parrot.ParrotModel;
@@ -24,7 +24,7 @@ public class VibrantParrotsClient implements ClientModConstructor {
 
     private static void registerEventHandlers() {
         AddLivingEntityRenderLayersCallback.EVENT.register(VibrantParrotOnShoulderLayer::addLivingEntityRenderLayers);
-        ExtractRenderStateCallback.EVENT.register(VibrantParrotOnShoulderLayer::onExtractRenderState);
+        ExtractEntityRenderStateCallback.EVENT.register(VibrantParrotOnShoulderLayer::onExtractEntityRenderState);
     }
 
     @Override

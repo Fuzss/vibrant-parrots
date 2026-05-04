@@ -26,7 +26,7 @@ abstract class ShoulderRidingEntityMixin extends TamableAnimal {
     public void setEntityOnShoulder(ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> callbackInfo) {
         if (VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsWhenSneaking) {
             Component component = Component.translatable("mount.onboard", Component.keybind("key.sneak"));
-            serverPlayer.displayClientMessage(component, true);
+            serverPlayer.sendOverlayMessage(component);
         }
     }
 }

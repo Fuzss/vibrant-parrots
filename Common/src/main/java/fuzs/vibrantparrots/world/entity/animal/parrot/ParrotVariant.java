@@ -2,7 +2,7 @@ package fuzs.vibrantparrots.world.entity.animal.parrot;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import fuzs.puzzleslib.api.util.v1.ValueSerializationHelper;
+import fuzs.puzzleslib.common.api.util.v1.ValueSerializationHelper;
 import fuzs.vibrantparrots.init.ModRegistry;
 import net.minecraft.core.ClientAsset;
 import net.minecraft.core.Holder;

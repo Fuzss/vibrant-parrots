@@ -2,12 +2,12 @@ package fuzs.vibrantparrots.init;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import fuzs.puzzleslib.api.attachment.v4.DataAttachmentRegistry;
-import fuzs.puzzleslib.api.attachment.v4.DataAttachmentType;
-import fuzs.puzzleslib.api.core.v1.ModLoaderEnvironment;
-import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
-import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
-import fuzs.puzzleslib.api.network.v4.PlayerSet;
+import fuzs.puzzleslib.common.api.attachment.v4.DataAttachmentRegistry;
+import fuzs.puzzleslib.common.api.attachment.v4.DataAttachmentType;
+import fuzs.puzzleslib.common.api.core.v1.ModLoaderEnvironment;
+import fuzs.puzzleslib.common.api.init.v3.registry.RegistryManager;
+import fuzs.puzzleslib.common.api.init.v3.tags.TagFactory;
+import fuzs.puzzleslib.common.api.network.v4.PlayerSet;
 import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
 import fuzs.vibrantparrots.world.entity.animal.parrot.VibrantParrot;
@@ -15,6 +15,7 @@ import fuzs.vibrantparrots.world.entity.projectile.throwableitemprojectile.Throw
 import fuzs.vibrantparrots.world.item.ParrotCageItem;
 import fuzs.vibrantparrots.world.item.ParrotEggItem;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.component.DataComponentType;
@@ -31,7 +32,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -47,13 +47,12 @@ public class ModRegistry {
             ParrotVariants::bootstrap);
 
     static final RegistryManager REGISTRIES = RegistryManager.from(VibrantParrots.MOD_ID);
-    public static final Holder.Reference<DataComponentType<Either<Parrot.Variant, EitherHolder<ParrotVariant>>>> PARROT_VARIANT_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
+    public static final Holder.Reference<DataComponentType<Either<Parrot.Variant, Holder<ParrotVariant>>>> PARROT_VARIANT_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
             "parrot/variant",
-            (DataComponentType.Builder<Either<Parrot.Variant, EitherHolder<ParrotVariant>>> builder) -> {
-                return builder.persistent(Codec.either(Parrot.Variant.CODEC,
-                                EitherHolder.codec(PARROT_VARIANT_REGISTRY, ParrotVariant.CODEC)))
+            (DataComponentType.Builder<Either<Parrot.Variant, Holder<ParrotVariant>>> builder) -> {
+                return builder.persistent(Codec.either(Parrot.Variant.CODEC, ParrotVariant.CODEC))
                         .networkSynchronized(ByteBufCodecs.either(Parrot.Variant.STREAM_CODEC,
-                                EitherHolder.streamCodec(PARROT_VARIANT_REGISTRY, ParrotVariant.STREAM_CODEC)));
+                                ParrotVariant.STREAM_CODEC));
             });
     /**
      * @see DataComponents#ENTITY_DATA
@@ -193,14 +192,17 @@ public class ModRegistry {
     }
 
     private static Item.Properties parrotEggProperties(ResourceKey<ParrotVariant> parrotVariant) {
-        return parrotEggProperties(Either.right(new EitherHolder<>(parrotVariant)));
+        return parrotEggProperties().delayedComponent(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
+                (HolderLookup.Provider context) -> {
+                    return Either.right(context.lookupOrThrow(PARROT_VARIANT_REGISTRY).getOrThrow(parrotVariant));
+                });
     }
 
     private static Item.Properties parrotEggProperties(Parrot.Variant parrotVariant) {
-        return parrotEggProperties(Either.left(parrotVariant));
+        return parrotEggProperties().component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), Either.left(parrotVariant));
     }
 
-    private static Item.Properties parrotEggProperties(Either<Parrot.Variant, EitherHolder<ParrotVariant>> parrotVariant) {
-        return new Item.Properties().stacksTo(16).component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), parrotVariant);
+    private static Item.Properties parrotEggProperties() {
+        return new Item.Properties().stacksTo(16);
     }
 }

@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import fuzs.vibrantparrots.init.ModRegistry;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
 import fuzs.vibrantparrots.world.entity.animal.parrot.VibrantParrot;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -12,9 +13,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
-import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -41,7 +42,7 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
     }
 
     protected ParticleOptions getParticle() {
-        return new ItemParticleOption(ParticleTypes.ITEM, this.getItem());
+        return new ItemParticleOption(ParticleTypes.ITEM, ItemStackTemplate.fromNonEmptyStack(this.getItem()));
     }
 
     @Override
@@ -71,18 +72,18 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
     protected void onHit(HitResult hitResult) {
         super.onHit(hitResult);
         if (this.level() instanceof ServerLevel serverLevel) {
-            Either<Parrot.Variant, EitherHolder<ParrotVariant>> either = this.getItem()
+            Either<Parrot.Variant, Holder<ParrotVariant>> either = this.getItem()
                     .get(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value());
             if (either != null) {
                 either.ifLeft((Parrot.Variant variant) -> {
                     this.spawnParrotChick(serverLevel, EntityType.PARROT, (Parrot parrot) -> {
                         parrot.setComponent(DataComponents.PARROT_VARIANT, variant);
                     });
-                }).ifRight((EitherHolder<ParrotVariant> holder) -> {
+                }).ifRight((Holder<ParrotVariant> holder) -> {
                     this.spawnParrotChick(serverLevel,
                             ModRegistry.PARROT_ENTITY_TYPE.value(),
                             (VibrantParrot parrot) -> {
-                                holder.unwrap(this.registryAccess()).ifPresent(parrot::setParrotVariant);
+                                parrot.setParrotVariant(holder);
                             });
                 });
             }

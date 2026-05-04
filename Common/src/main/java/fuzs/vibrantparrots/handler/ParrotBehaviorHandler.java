@@ -1,6 +1,6 @@
 package fuzs.vibrantparrots.handler;
 
-import fuzs.puzzleslib.api.event.v1.core.EventResultHolder;
+import fuzs.puzzleslib.common.api.event.v1.core.EventResultHolder;
 import fuzs.vibrantparrots.init.ModRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -50,7 +51,7 @@ public class ParrotBehaviorHandler {
         return eggLayTime;
     }
 
-    public static EventResultHolder<InteractionResult> onUseEntity(Player player, Level level, InteractionHand interactionHand, Entity entity) {
+    public static EventResultHolder<InteractionResult> onUseEntity(Player player, Level level, InteractionHand interactionHand, Entity entity, Vec3 hitVector) {
         if (entity instanceof Parrot parrot && entity instanceof Bucketable bucketable && parrot.isTame()
                 && parrot.isOwnedBy(player)) {
             return bucketMobPickup(player, interactionHand, parrot, bucketable).map(EventResultHolder::interrupt)

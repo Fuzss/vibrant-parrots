@@ -1,6 +1,6 @@
 package fuzs.vibrantparrots.neoforge.init;
 
-import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
+import fuzs.puzzleslib.common.api.init.v3.registry.RegistryManager;
 import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.init.ModRegistry;
 import fuzs.vibrantparrots.world.item.ParrotCageItem;

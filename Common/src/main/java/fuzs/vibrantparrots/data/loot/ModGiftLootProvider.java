@@ -1,8 +1,8 @@
 package fuzs.vibrantparrots.data.loot;
 
 import com.mojang.datafixers.util.Either;
-import fuzs.puzzleslib.api.data.v2.AbstractLootProvider;
-import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
+import fuzs.puzzleslib.common.api.data.v2.AbstractLootProvider;
+import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
 import fuzs.vibrantparrots.init.ModRegistry;
 import fuzs.vibrantparrots.init.ParrotVariants;
 import fuzs.vibrantparrots.world.entity.animal.parrot.ParrotVariant;
@@ -12,7 +12,6 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.component.DataComponentExactPredicate;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.animal.parrot.Parrot;
-import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -41,9 +40,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                         EntityPredicate.Builder.entity()
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.WHITE)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.WHITE))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.ORANGE_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -51,9 +49,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.ORANGE)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.ORANGE))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.MAGENTA_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -61,9 +58,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.MAGENTA)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.MAGENTA))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.LIGHT_BLUE_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -79,9 +75,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.YELLOW)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.YELLOW))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.LIME_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -97,9 +92,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.PINK)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.PINK))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.GRAY_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -107,9 +101,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.GRAY)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.GRAY))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.LIGHT_GRAY_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -125,9 +118,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.CYAN)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.CYAN))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.PURPLE_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -135,9 +127,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.PURPLE)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.PURPLE))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.BLUE_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -153,9 +144,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.BROWN)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.BROWN))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.GREEN_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -163,9 +153,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.GREEN)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.GREEN))))
                                                                         .build()))),
                                         LootItem.lootTableItem(ModRegistry.RED_PARROT_EGG_ITEM.value())
                                                 .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
@@ -181,9 +170,8 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                                                                 .components(DataComponentMatchers.Builder.components()
                                                                         .exact(DataComponentExactPredicate.expect(
                                                                                 ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                                                                Either.right(new EitherHolder<>(
-                                                                                        parrotVariantLookup.getOrThrow(
-                                                                                                ParrotVariants.BLACK)))))
+                                                                                Either.right(parrotVariantLookup.getOrThrow(
+                                                                                        ParrotVariants.BLACK))))
                                                                         .build())))))));
     }
 }

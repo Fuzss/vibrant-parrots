@@ -1,7 +1,7 @@
 package fuzs.vibrantparrots.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import fuzs.puzzleslib.api.client.renderer.v1.RenderStateExtraData;
+import fuzs.puzzleslib.common.api.client.renderer.v1.RenderStateExtraData;
 import fuzs.vibrantparrots.VibrantParrots;
 import fuzs.vibrantparrots.client.model.geom.ModModelLayers;
 import fuzs.vibrantparrots.init.ModRegistry;
@@ -49,7 +49,7 @@ public class VibrantParrotOnShoulderLayer extends RenderLayer<AvatarRenderState,
         }
     }
 
-    public static void onExtractRenderState(Entity entity, EntityRenderState renderState, float partialTick) {
+    public static void onExtractEntityRenderState(Entity entity, EntityRenderState renderState, float partialTick) {
         if (entity instanceof Avatar && renderState instanceof AvatarRenderState avatarRenderState) {
             RenderStateExtraData.set(renderState,
                     PARROT_ON_LEFT_SHOULDER_KEY,

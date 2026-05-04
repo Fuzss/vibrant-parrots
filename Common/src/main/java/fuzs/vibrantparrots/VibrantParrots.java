@@ -1,12 +1,12 @@
 package fuzs.vibrantparrots;
 
-import fuzs.puzzleslib.api.config.v3.ConfigHolder;
-import fuzs.puzzleslib.api.core.v1.ModConstructor;
-import fuzs.puzzleslib.api.core.v1.context.DataPackRegistriesContext;
-import fuzs.puzzleslib.api.core.v1.context.EntityAttributesContext;
-import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
-import fuzs.puzzleslib.api.event.v1.entity.ServerEntityLevelEvents;
-import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
+import fuzs.puzzleslib.common.api.config.v3.ConfigHolder;
+import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
+import fuzs.puzzleslib.common.api.core.v1.context.DataPackRegistriesContext;
+import fuzs.puzzleslib.common.api.core.v1.context.EntityAttributesContext;
+import fuzs.puzzleslib.common.api.core.v1.context.SpawnPlacementsContext;
+import fuzs.puzzleslib.common.api.event.v1.entity.ServerEntityLevelEvents;
+import fuzs.puzzleslib.common.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.vibrantparrots.config.ServerConfig;
 import fuzs.vibrantparrots.handler.ParrotBehaviorHandler;
 import fuzs.vibrantparrots.handler.ParrotSpawningHandler;
