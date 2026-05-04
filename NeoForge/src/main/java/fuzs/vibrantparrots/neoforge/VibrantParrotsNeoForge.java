@@ -2,12 +2,12 @@ package fuzs.vibrantparrots.neoforge;
 
 import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.neoforge.api.data.v2.core.DataProviderHelper;
-import fuzs.vibrantparrots.VibrantParrots;
-import fuzs.vibrantparrots.data.loot.ModGiftLootProvider;
-import fuzs.vibrantparrots.data.tags.ModDamageTypeTagProvider;
-import fuzs.vibrantparrots.data.tags.ModEntityTagProvider;
-import fuzs.vibrantparrots.data.tags.ModItemTagProvider;
-import fuzs.vibrantparrots.init.ModRegistry;
+import fuzs.vibrantparrots.common.VibrantParrots;
+import fuzs.vibrantparrots.common.data.loot.ModGiftLootProvider;
+import fuzs.vibrantparrots.common.data.tags.ModDamageTypeTagProvider;
+import fuzs.vibrantparrots.common.data.tags.ModEntityTagProvider;
+import fuzs.vibrantparrots.common.data.tags.ModItemTagProvider;
+import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.neoforge.init.NeoForgeModRegistry;
 import net.neoforged.fml.common.Mod;
 

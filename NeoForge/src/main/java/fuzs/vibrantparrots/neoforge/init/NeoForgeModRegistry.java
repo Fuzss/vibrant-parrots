@@ -1,9 +1,9 @@
 package fuzs.vibrantparrots.neoforge.init;
 
 import fuzs.puzzleslib.common.api.init.v3.registry.RegistryManager;
-import fuzs.vibrantparrots.VibrantParrots;
-import fuzs.vibrantparrots.init.ModRegistry;
-import fuzs.vibrantparrots.world.item.ParrotCageItem;
+import fuzs.vibrantparrots.common.VibrantParrots;
+import fuzs.vibrantparrots.common.init.ModRegistry;
+import fuzs.vibrantparrots.common.world.item.ParrotCageItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.LivingEntity;

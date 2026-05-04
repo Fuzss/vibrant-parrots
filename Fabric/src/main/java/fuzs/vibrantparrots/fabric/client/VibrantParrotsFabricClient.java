@@ -1,7 +1,7 @@
 package fuzs.vibrantparrots.fabric.client;
 
-import fuzs.vibrantparrots.VibrantParrots;
-import fuzs.vibrantparrots.client.VibrantParrotsClient;
+import fuzs.vibrantparrots.common.VibrantParrots;
+import fuzs.vibrantparrots.common.client.VibrantParrotsClient;
 import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
 import net.fabricmc.api.ClientModInitializer;
 
