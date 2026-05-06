@@ -18,8 +18,8 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
     public void addTranslations(TranslationBuilder translationBuilder) {
         translationBuilder.add(ModRegistry.CREATIVE_MODE_TAB.value(), VibrantParrots.MOD_NAME);
         translationBuilder.add(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), "Parrot Egg");
-        translationBuilder.add(ModRegistry.CAGE_ITEM.value(), "Cage");
-        translationBuilder.add(ModRegistry.PARROT_CAGE_ITEM.value(), "Parrot Cage");
+        translationBuilder.add(ModRegistry.BIRD_CAGE_ITEM.value(), "Bird Cage");
+        translationBuilder.add(ModRegistry.PARROT_CAGE_ITEM.value(), "Cage of Parrot");
         translationBuilder.add(ModRegistry.WHITE_PARROT_EGG_ITEM.value(), "White Parrot Egg");
         translationBuilder.add(ModRegistry.ORANGE_PARROT_EGG_ITEM.value(), "Orange Parrot Egg");
         translationBuilder.add(ModRegistry.MAGENTA_PARROT_EGG_ITEM.value(), "Magenta Parrot Egg");

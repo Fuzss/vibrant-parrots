@@ -1,7 +1,7 @@
 package fuzs.vibrantparrots.fabric;
 
-import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
+import fuzs.vibrantparrots.common.VibrantParrots;
 import net.fabricmc.api.ModInitializer;
 
 public class VibrantParrotsFabric implements ModInitializer {

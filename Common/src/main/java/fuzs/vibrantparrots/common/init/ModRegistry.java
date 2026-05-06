@@ -92,7 +92,7 @@ public class ModRegistry {
                         .clientTrackingRange(4)
                         .updateInterval(10);
             });
-    public static final Holder.Reference<Item> CAGE_ITEM = REGISTRIES.registerItem("cage",
+    public static final Holder.Reference<Item> BIRD_CAGE_ITEM = REGISTRIES.registerItem("bird_cage",
             () -> new Item.Properties().stacksTo(16));
     public static final Holder.Reference<Item> PARROT_CAGE_ITEM = REGISTRIES.whenOnFabricLike()
             .registerItem("parrot_cage", ParrotCageItem::new, ModRegistry::parrotCageProperties);

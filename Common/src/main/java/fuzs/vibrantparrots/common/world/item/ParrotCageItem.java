@@ -33,7 +33,7 @@ public class ParrotCageItem extends MobBucketItem {
         InteractionResult interactionResult = super.use(level, player, interactionHand);
         if (interactionResult instanceof InteractionResult.Success success) {
             if (success.heldItemTransformedTo() != null && success.heldItemTransformedTo().is(Items.BUCKET)) {
-                return success.heldItemTransformedTo(new ItemStack(ModRegistry.CAGE_ITEM));
+                return success.heldItemTransformedTo(new ItemStack(ModRegistry.BIRD_CAGE_ITEM));
             }
         }
 

@@ -5,7 +5,7 @@ import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.common.api.core.v1.context.DataPackRegistriesContext;
 import fuzs.puzzleslib.common.api.core.v1.context.EntityAttributesContext;
 import fuzs.puzzleslib.common.api.core.v1.context.SpawnPlacementsContext;
-import fuzs.puzzleslib.common.api.event.v1.entity.ServerEntityLevelEvents;
+import fuzs.puzzleslib.common.api.event.v1.entity.ServerEntityEvents;
 import fuzs.puzzleslib.common.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.vibrantparrots.common.config.ServerConfig;
 import fuzs.vibrantparrots.common.handler.ParrotBehaviorHandler;
@@ -34,7 +34,7 @@ public class VibrantParrots implements ModConstructor {
     }
 
     private static void registerEventHandlers() {
-        ServerEntityLevelEvents.LOAD.register(ParrotSpawningHandler::onEntityLoad);
+        ServerEntityEvents.LOAD.register(ParrotSpawningHandler::onEntityLoad);
         PlayerInteractEvents.USE_ENTITY.register(ParrotBehaviorHandler::onUseEntity);
     }
 
