@@ -24,7 +24,7 @@ public class ParrotSpawningHandler {
             if (entity.getType() == EntityType.PARROT && entity instanceof Mob mob && getSpawnAsCustomEntityOdds(
                     serverLevel)) {
                 mob.convertTo(ModRegistry.PARROT_ENTITY_TYPE.value(),
-                        ConversionParams.single(mob, true, true),
+                        ConversionParams.single(mob, false, false),
                         (VibrantParrot parrot) -> {
                             DifficultyInstance difficulty = serverLevel.getCurrentDifficultyAt(mob.blockPosition());
                             parrot.finalizeSpawn(serverLevel, difficulty, entitySpawnReason, null);
