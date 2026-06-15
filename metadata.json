@@ -7,7 +7,7 @@
         "authors": [
             "Fuzs"
         ],
-        "description": "Example description.",
+        "description": "New colorful parrots, breeding, eggs, and portable cages for the ultimate bird companion.",
         "license": "MPL-2.0"
     },
     "dependencies": [
@@ -36,8 +36,18 @@
     ],
     "links": [
         {
+            "name": "curseforge",
+            "slug": "vibrant-parrots",
+            "id": "1576253"
+        },
+        {
             "name": "github",
             "slug": "vibrant-parrots"
+        },
+        {
+            "name": "modrinth",
+            "slug": "vibrant-parrots",
+            "id": "v7w63Mwj"
         }
     ],
     "environments": {
