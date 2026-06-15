@@ -5,6 +5,7 @@ import fuzs.puzzleslib.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.api.core.v1.context.DataPackRegistriesContext;
 import fuzs.puzzleslib.api.core.v1.context.EntityAttributesContext;
 import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
+import fuzs.puzzleslib.api.event.v1.BuildCreativeModeTabContentsCallback;
 import fuzs.puzzleslib.api.event.v1.entity.ServerEntityLevelEvents;
 import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.vibrantparrots.config.ServerConfig;
@@ -16,6 +17,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.parrot.Parrot;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +39,10 @@ public class VibrantParrots implements ModConstructor {
     private static void registerEventHandlers() {
         ServerEntityLevelEvents.LOAD.register(ParrotSpawningHandler::onEntityLoad);
         PlayerInteractEvents.USE_ENTITY.register(ParrotBehaviorHandler::onUseEntity);
+        BuildCreativeModeTabContentsCallback.buildCreativeModeTabContents(ModRegistry.CREATIVE_MODE_TAB.key())
+                .register((CreativeModeTab creativeModeTab, CreativeModeTab.ItemDisplayParameters itemDisplayParameters, CreativeModeTab.Output output) -> {
+                    output.accept(Items.PARROT_SPAWN_EGG);
+                });
     }
 
     @Override
