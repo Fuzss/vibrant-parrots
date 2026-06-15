@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import fuzs.puzzleslib.common.api.attachment.v4.DataAttachmentRegistry;
 import fuzs.puzzleslib.common.api.attachment.v4.DataAttachmentType;
-import fuzs.puzzleslib.common.api.core.v1.ModLoaderEnvironment;
 import fuzs.puzzleslib.common.api.init.v3.registry.RegistryManager;
 import fuzs.puzzleslib.common.api.init.v3.tags.TagFactory;
 import fuzs.puzzleslib.common.api.network.v4.PlayerSet;
@@ -38,7 +37,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.function.Function;
 
 public class ModRegistry {
     public static final ResourceKey<Registry<ParrotVariant>> PARROT_VARIANT_REGISTRY = ResourceKey.createRegistryKey(
@@ -147,7 +145,7 @@ public class ModRegistry {
             ParrotEggItem::new,
             () -> parrotEggProperties(ParrotVariants.BLACK));
     public static final Holder.Reference<CreativeModeTab> CREATIVE_MODE_TAB = REGISTRIES.registerCreativeModeTab(
-            WHITE_PARROT_EGG_ITEM);
+            PARROT_CAGE_ITEM);
     public static final ResourceKey<LootTable> PARROT_LAY_LOOT_TABLE = REGISTRIES.registerLootTable(
             "gameplay/parrot_lay");
 
@@ -159,19 +157,11 @@ public class ModRegistry {
 
     public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
             .defaultValue(EntityType.PLAYER, Optional.empty())
-            .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional),
-                    // Do not sync to players to bypass this bug in Fabric: https://github.com/FabricMC/fabric-api/issues/4943
-                    ModLoaderEnvironment.INSTANCE.getModLoader().isFabric() ? (Entity entity) -> {
-                        return Function.identity()::apply;
-                    } : PlayerSet::nearEntity)
+            .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("left_shoulder_parrot"));
     public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
             .defaultValue(EntityType.PLAYER, Optional.empty())
-            .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional),
-                    // Do not sync to players to bypass this bug in Fabric: https://github.com/FabricMC/fabric-api/issues/4943
-                    ModLoaderEnvironment.INSTANCE.getModLoader().isFabric() ? (Entity entity) -> {
-                        return Function.identity()::apply;
-                    } : PlayerSet::nearEntity)
+            .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("right_shoulder_parrot"));
     public static final DataAttachmentType<Entity, OptionalInt> EGG_LAY_TIME_ATTACHMENT_TYPE = DataAttachmentRegistry.<OptionalInt>entityBuilder()
             .defaultValue(Parrot.class, OptionalInt.empty())
