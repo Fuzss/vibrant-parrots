@@ -67,7 +67,7 @@ public class ModRegistry {
                 return EntityDataSerializer.forValueType(ParrotVariant.STREAM_CODEC);
             });
     /**
-     * @see EntityType#PARROT
+     * @see EntityTypes#PARROT
      */
     public static final Holder.Reference<EntityType<VibrantParrot>> PARROT_ENTITY_TYPE = REGISTRIES.register(Registries.ENTITY_TYPE,
             "parrot",
