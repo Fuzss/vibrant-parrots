@@ -18,6 +18,8 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.variant.SpawnContext;
 import net.minecraft.world.entity.variant.VariantUtils;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
@@ -82,6 +84,11 @@ public class VibrantParrot extends Parrot {
         }
 
         return parrot;
+    }
+
+    @Override
+    public ItemStack getPickResult() {
+        return new ItemStack(Items.PARROT_SPAWN_EGG);
     }
 
     @Nullable

@@ -81,14 +81,12 @@ abstract class ServerPlayerMixin extends Player {
     }
 
     @Inject(method = "setShoulderEntityLeft", at = @At("TAIL"))
-    protected void setShoulderEntityLeft(CompoundTag compoundTag, CallbackInfo callback) {
-        ModRegistry.LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE.set(this,
-                ParrotVariant.extractParrotVariant(this, compoundTag));
+    protected void setShoulderEntityLeft(CompoundTag tag, CallbackInfo callback) {
+        ModRegistry.LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE.set(this, ParrotVariant.extractParrotVariant(this, tag));
     }
 
     @Inject(method = "setShoulderEntityRight", at = @At("TAIL"))
-    protected void setShoulderEntityRight(CompoundTag compoundTag, CallbackInfo callback) {
-        ModRegistry.RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE.set(this,
-                ParrotVariant.extractParrotVariant(this, compoundTag));
+    protected void setShoulderEntityRight(CompoundTag tag, CallbackInfo callback) {
+        ModRegistry.RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE.set(this, ParrotVariant.extractParrotVariant(this, tag));
     }
 }

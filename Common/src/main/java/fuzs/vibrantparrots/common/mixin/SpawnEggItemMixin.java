@@ -20,13 +20,13 @@ abstract class SpawnEggItemMixin extends Item {
     }
 
     @ModifyReturnValue(method = "spawnsEntity", at = @At("TAIL"))
-    private static boolean spawnsEntity(boolean spawnsEntity, ItemStack itemStack, EntityType<?> entityType) {
+    private static boolean spawnsEntity(boolean spawnsEntity, ItemStack itemStack, EntityType<?> type) {
         return spawnsEntity
-                || getType(itemStack) == EntityTypes.PARROT && entityType == ModRegistry.PARROT_ENTITY_TYPE.value();
+                || getType(itemStack) == EntityTypes.PARROT && type == ModRegistry.PARROT_ENTITY_TYPE.value();
     }
 
     @Shadow
     private static @Nullable EntityType<?> getType(ItemStack itemStack) {
-        throw new UnsupportedOperationException();
+        throw new RuntimeException();
     }
 }

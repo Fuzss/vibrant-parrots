@@ -89,11 +89,11 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
     @Inject(method = "mobInteract",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/parrot/Parrot;isFlying()Z"),
             cancellable = true)
-    public void mobInteract$1(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> callback) {
-        ItemStack itemInHand = player.getItemInHand(interactionHand);
+    public void mobInteract$1(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> callback) {
+        ItemStack itemInHand = player.getItemInHand(hand);
         if (this.isFood(itemInHand)) {
             if (this.isTame() && (this.isBaby() || this.getAge() == DEFAULT_AGE && this.canFallInLove())) {
-                callback.setReturnValue(super.mobInteract(player, interactionHand));
+                callback.setReturnValue(super.mobInteract(player, hand));
             } else {
                 callback.setReturnValue(InteractionResult.PASS);
             }
@@ -108,25 +108,25 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
     }
 
     @ModifyReturnValue(method = "canBeABaby", at = @At("TAIL"))
-    public boolean isBaby(boolean isBaby) {
-        return this.getAge() < DEFAULT_AGE;
+    public boolean canBeABaby(boolean canBeABaby) {
+        return true;
     }
 
     @Override
-    public void spawnChildFromBreeding(ServerLevel serverLevel, Animal otherAnimal) {
-        this.finalizeSpawnChildFromBreeding(serverLevel, otherAnimal, null);
+    public void spawnChildFromBreeding(ServerLevel level, Animal partner) {
+        this.finalizeSpawnChildFromBreeding(level, partner, null);
         int eggLayTime = VibrantParrots.CONFIG.get(ServerConfig.class).sampleEggLayTime(this.getRandom());
         ModRegistry.EGG_LAY_TIME_ATTACHMENT_TYPE.set(this, OptionalInt.of(eggLayTime));
         this.setOrderedToSit(true);
     }
 
     @ModifyReturnValue(method = "canMate", at = @At("TAIL"))
-    public boolean canMate(boolean canMate, Animal otherAnimal) {
-        if (otherAnimal == this) {
+    public boolean canMate(boolean canMate, Animal partner) {
+        if (partner == this) {
             return false;
         } else if (!this.isTame()) {
             return false;
-        } else if (!(otherAnimal instanceof Parrot otherParrot)) {
+        } else if (!(partner instanceof Parrot otherParrot)) {
             return false;
         } else if (!otherParrot.isTame()) {
             return false;
@@ -138,8 +138,8 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
     }
 
     @ModifyReturnValue(method = "getBreedOffspring", at = @At("TAIL"))
-    public @Nullable AgeableMob getBreedOffspring(@Nullable AgeableMob breedOffspring, ServerLevel serverLevel, AgeableMob otherParent) {
-        Parrot parrot = EntityTypes.PARROT.create(serverLevel, EntitySpawnReason.BREEDING);
+    public @Nullable AgeableMob getBreedOffspring(@Nullable AgeableMob breedOffspring, ServerLevel level, AgeableMob partner) {
+        Parrot parrot = EntityTypes.PARROT.create(level, EntitySpawnReason.BREEDING);
         if (parrot != null) {
             parrot.setComponent(DataComponents.PARROT_VARIANT, this.getVariant());
         }
@@ -164,13 +164,13 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
      * @see TamableAnimal#addAdditionalSaveData(ValueOutput)
      */
     @Override
-    public void saveToBucketTag(ItemStack itemStack) {
-        Bucketable.saveDefaultDataToBucketTag(this, itemStack);
-        itemStack.set(ModRegistry.ENTITY_TYPE_DATA_COMPONENT_TYPE.value(), this.getType());
-        itemStack.copyFrom(DataComponents.PARROT_VARIANT, this);
+    public void saveToBucketTag(ItemStack bucket) {
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
+        bucket.set(ModRegistry.ENTITY_TYPE_DATA_COMPONENT_TYPE.value(), this.getType());
+        bucket.copyFrom(DataComponents.PARROT_VARIANT, this);
         // Just add the custom parrot component here as well, so we do not have to mess with the patched-in interface in the actual mob class.
-        itemStack.copyFrom(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), this);
-        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, itemStack, (CompoundTag compoundTag) -> {
+        bucket.copyFrom(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), this);
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, bucket, (CompoundTag compoundTag) -> {
             compoundTag.putInt("Age", this.getAge());
             compoundTag.storeNullable("Owner", EntityReference.codec(), this.getOwnerReference());
         });
@@ -180,10 +180,10 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
      * @see TamableAnimal#readAdditionalSaveData(ValueInput)
      */
     @Override
-    public void loadFromBucketTag(CompoundTag compoundTag) {
-        Bucketable.loadDefaultDataFromBucketTag(this, compoundTag);
-        this.setAge(compoundTag.getIntOr("Age", DEFAULT_AGE));
-        Optional<EntityReference<LivingEntity>> optional = compoundTag.read("Owner", EntityReference.codec());
+    public void loadFromBucketTag(CompoundTag tag) {
+        Bucketable.loadDefaultDataFromBucketTag(this, tag);
+        this.setAge(tag.getIntOr("Age", DEFAULT_AGE));
+        Optional<EntityReference<LivingEntity>> optional = tag.read("Owner", EntityReference.codec());
         if (optional.isPresent()) {
             this.setOwnerReference(optional.get());
             this.setTame(true, false);

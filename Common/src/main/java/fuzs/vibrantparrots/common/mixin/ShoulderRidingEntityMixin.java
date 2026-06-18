@@ -23,10 +23,10 @@ abstract class ShoulderRidingEntityMixin extends TamableAnimal {
     @Inject(method = "setEntityOnShoulder",
             at = @At(value = "INVOKE",
                      target = "Lnet/minecraft/world/entity/animal/parrot/ShoulderRidingEntity;discard()V"))
-    public void setEntityOnShoulder(ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> callbackInfo) {
+    public void setEntityOnShoulder(ServerPlayer player, CallbackInfoReturnable<Boolean> callbackInfo) {
         if (VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsWhenSneaking) {
             Component component = Component.translatable("mount.onboard", Component.keybind("key.sneak"));
-            serverPlayer.sendOverlayMessage(component);
+            player.sendOverlayMessage(component);
         }
     }
 }
