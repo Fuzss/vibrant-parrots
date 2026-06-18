@@ -76,7 +76,7 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
                     .get(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value());
             if (either != null) {
                 either.ifLeft((Parrot.Variant variant) -> {
-                    this.spawnParrotChick(serverLevel, EntityType.PARROT, (Parrot parrot) -> {
+                    this.spawnParrotChick(serverLevel, EntityTypes.PARROT, (Parrot parrot) -> {
                         parrot.setComponent(DataComponents.PARROT_VARIANT, variant);
                     });
                 }).ifRight((Holder<ParrotVariant> holder) -> {

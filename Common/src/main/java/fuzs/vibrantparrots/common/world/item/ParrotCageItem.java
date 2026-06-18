@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +26,7 @@ public class ParrotCageItem extends MobBucketItem {
     public ParrotCageItem(Properties properties) {
         // We use lava as it prevents the entity from being placed into waterloggable blocks.
         // The fluid is not placed, we prevent that via overriding #emptyContents.
-        super(EntityType.PARROT, Fluids.LAVA, SoundEvents.BUCKET_EMPTY, properties);
+        super(EntityTypes.PARROT, Fluids.LAVA, SoundEvents.BUCKET_EMPTY, properties);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class ParrotCageItem extends MobBucketItem {
             return (EntityType<Mob>) entityType;
         } else {
             return ParrotSpawningHandler.getSpawnAsCustomEntityOdds(serverLevel) ?
-                    ModRegistry.PARROT_ENTITY_TYPE.value() : EntityType.PARROT;
+                    ModRegistry.PARROT_ENTITY_TYPE.value() : EntityTypes.PARROT;
         }
     }
 

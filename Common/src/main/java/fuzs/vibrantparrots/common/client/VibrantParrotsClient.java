@@ -13,7 +13,7 @@ import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.client.model.animal.parrot.ParrotModel;
 import net.minecraft.client.model.geom.builders.MeshTransformer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class VibrantParrotsClient implements ClientModConstructor {
 
@@ -29,7 +29,7 @@ public class VibrantParrotsClient implements ClientModConstructor {
 
     @Override
     public void onRegisterEntityRenderers(EntityRenderersContext context) {
-        context.registerEntityRenderer(EntityType.PARROT, VanillaParrotRenderer::new);
+        context.registerEntityRenderer(EntityTypes.PARROT, VanillaParrotRenderer::new);
         context.registerEntityRenderer(ModRegistry.PARROT_ENTITY_TYPE.value(), VibrantParrotRenderer::new);
         context.registerEntityRenderer(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), ThrownItemRenderer::new);
     }

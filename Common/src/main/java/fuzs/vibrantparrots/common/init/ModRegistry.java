@@ -28,6 +28,7 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.item.CreativeModeTab;
@@ -76,7 +77,7 @@ public class ModRegistry {
                         .eyeHeight(0.54F)
                         .passengerAttachments(0.4625F)
                         .clientTrackingRange(8)
-                        .build(EntityType.PARROT.builtInRegistryHolder().key());
+                        .build(EntityTypes.PARROT.builtInRegistryHolder().key());
             });
     /**
      * @see EntityType#EGG
@@ -156,11 +157,11 @@ public class ModRegistry {
             "dismounts_parrots");
 
     public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
-            .defaultValue(EntityType.PLAYER, Optional.empty())
+            .defaultValue(EntityTypes.PLAYER, Optional.empty())
             .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("left_shoulder_parrot"));
     public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
-            .defaultValue(EntityType.PLAYER, Optional.empty())
+            .defaultValue(EntityTypes.PLAYER, Optional.empty())
             .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("right_shoulder_parrot"));
     public static final DataAttachmentType<Entity, OptionalInt> EGG_LAY_TIME_ATTACHMENT_TYPE = DataAttachmentRegistry.<OptionalInt>entityBuilder()

@@ -16,7 +16,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.animal.parrot.ShoulderRidingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -108,7 +107,7 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
         this.setOrderedToSit(true);
     }
 
-    @ModifyReturnValue(method = "isBaby", at = @At("TAIL"))
+    @ModifyReturnValue(method = "canBeABaby", at = @At("TAIL"))
     public boolean isBaby(boolean isBaby) {
         return this.getAge() < DEFAULT_AGE;
     }
@@ -140,7 +139,7 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
 
     @ModifyReturnValue(method = "getBreedOffspring", at = @At("TAIL"))
     public @Nullable AgeableMob getBreedOffspring(@Nullable AgeableMob breedOffspring, ServerLevel serverLevel, AgeableMob otherParent) {
-        Parrot parrot = EntityType.PARROT.create(serverLevel, EntitySpawnReason.BREEDING);
+        Parrot parrot = EntityTypes.PARROT.create(serverLevel, EntitySpawnReason.BREEDING);
         if (parrot != null) {
             parrot.setComponent(DataComponents.PARROT_VARIANT, this.getVariant());
         }

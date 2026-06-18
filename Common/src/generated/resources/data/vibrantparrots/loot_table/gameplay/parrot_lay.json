@@ -2,7 +2,6 @@
   "type": "minecraft:gift",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:alternatives",
@@ -14,7 +13,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:white"
                     }
                   }
@@ -29,7 +28,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:orange"
                     }
                   }
@@ -44,7 +43,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:magenta"
                     }
                   }
@@ -59,7 +58,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "minecraft:parrot/variant": "yellow_blue"
                     }
                   }
@@ -74,7 +73,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:yellow"
                     }
                   }
@@ -89,7 +88,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "minecraft:parrot/variant": "green"
                     }
                   }
@@ -104,7 +103,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:pink"
                     }
                   }
@@ -119,7 +118,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:gray"
                     }
                   }
@@ -134,7 +133,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "minecraft:parrot/variant": "gray"
                     }
                   }
@@ -149,7 +148,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:cyan"
                     }
                   }
@@ -164,7 +163,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:purple"
                     }
                   }
@@ -179,7 +178,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "minecraft:parrot/variant": "blue"
                     }
                   }
@@ -194,7 +193,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:brown"
                     }
                   }
@@ -209,7 +208,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:green"
                     }
                   }
@@ -224,7 +223,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "minecraft:parrot/variant": "red_blue"
                     }
                   }
@@ -239,7 +238,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "components": {
+                    "minecraft:components": {
                       "vibrantparrots:parrot/variant": "vibrantparrots:black"
                     }
                   }

@@ -21,7 +21,7 @@ public class ParrotSpawningHandler {
 
     public static void onEntityLoad(Entity entity, ServerLevel serverLevel, boolean isLoadedFromDisk, @Nullable EntitySpawnReason entitySpawnReason) {
         if (!isLoadedFromDisk && entitySpawnReason != null && VALID_SPAWN_REASONS.contains(entitySpawnReason)) {
-            if (entity.getType() == EntityType.PARROT && entity instanceof Mob mob && getSpawnAsCustomEntityOdds(
+            if (entity.getType() == EntityTypes.PARROT && entity instanceof Mob mob && getSpawnAsCustomEntityOdds(
                     serverLevel)) {
                 mob.convertTo(ModRegistry.PARROT_ENTITY_TYPE.value(),
                         ConversionParams.single(mob, false, false),

@@ -1,4 +1,4 @@
-// 26.1.2	2026-05-04T22:35:30.132937	Tags for minecraft:entity_type mod id vanilla
+// 26.2	2026-06-18T11:46:57.994633	Tags for minecraft:entity_type mod id vanilla
 fd152bc9f58e37eeb89517140a2e3407d7169c3e data/minecraft/tags/entity_type/fall_damage_immune.json
 fd152bc9f58e37eeb89517140a2e3407d7169c3e data/minecraft/tags/entity_type/followable_friendly_mobs.json
 764da83bb408991cae8b959dae927a159e471433 data/vibrantparrots/tags/entity_type/parrots.json
