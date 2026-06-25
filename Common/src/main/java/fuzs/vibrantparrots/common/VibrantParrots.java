@@ -13,12 +13,14 @@ import fuzs.vibrantparrots.common.handler.ParrotBehaviorHandler;
 import fuzs.vibrantparrots.common.handler.ParrotSpawningHandler;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +45,11 @@ public class VibrantParrots implements ModConstructor {
                 .register((CreativeModeTab creativeModeTab, CreativeModeTab.ItemDisplayParameters itemDisplayParameters, CreativeModeTab.Output output) -> {
                     output.accept(Items.PARROT_SPAWN_EGG);
                 });
+    }
 
+    @Override
+    public void onCommonSetup() {
+        ModRegistry.PARROT_EGG_ITEM.map(Holder.Reference::value).forEach(DispenserBlock::registerProjectileBehavior);
     }
 
     @Override

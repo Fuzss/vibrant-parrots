@@ -5,6 +5,8 @@ import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.Item;
 
 public class ModModelProvider extends AbstractModelProvider {
 
@@ -16,21 +18,8 @@ public class ModModelProvider extends AbstractModelProvider {
     public void addItemModels(ItemModelGenerators itemModelGenerators) {
         itemModelGenerators.generateFlatItem(ModRegistry.BIRD_CAGE_ITEM.value(), ModelTemplates.FLAT_ITEM);
         itemModelGenerators.generateFlatItem(ModRegistry.PARROT_CAGE_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.WHITE_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.ORANGE_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.MAGENTA_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.LIGHT_BLUE_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.YELLOW_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.LIME_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.PINK_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.GRAY_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.LIGHT_GRAY_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.CYAN_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.PURPLE_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.BLUE_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.BROWN_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.GREEN_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.RED_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
-        itemModelGenerators.generateFlatItem(ModRegistry.BLACK_PARROT_EGG_ITEM.value(), ModelTemplates.FLAT_ITEM);
+        ModRegistry.PARROT_EGG_ITEM.forEach((Holder.Reference<Item> item) -> {
+            itemModelGenerators.generateFlatItem(item.value(), ModelTemplates.FLAT_ITEM);
+        });
     }
 }

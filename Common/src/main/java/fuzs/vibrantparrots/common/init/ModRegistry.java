@@ -34,6 +34,7 @@ import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.Optional;
@@ -95,56 +96,20 @@ public class ModRegistry {
             () -> new Item.Properties().stacksTo(16));
     public static final Holder.Reference<Item> PARROT_CAGE_ITEM = REGISTRIES.whenOnFabricLike()
             .registerItem("parrot_cage", ParrotCageItem::new, ModRegistry::parrotCageProperties);
-    public static final Holder.Reference<Item> WHITE_PARROT_EGG_ITEM = REGISTRIES.registerItem("white_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.WHITE));
-    public static final Holder.Reference<Item> ORANGE_PARROT_EGG_ITEM = REGISTRIES.registerItem("orange_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.ORANGE));
-    public static final Holder.Reference<Item> MAGENTA_PARROT_EGG_ITEM = REGISTRIES.registerItem("magenta_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.MAGENTA));
-    public static final Holder.Reference<Item> LIGHT_BLUE_PARROT_EGG_ITEM = REGISTRIES.registerItem(
-            "light_blue_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(Parrot.Variant.YELLOW_BLUE));
-    public static final Holder.Reference<Item> YELLOW_PARROT_EGG_ITEM = REGISTRIES.registerItem("yellow_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.YELLOW));
-    public static final Holder.Reference<Item> LIME_PARROT_EGG_ITEM = REGISTRIES.registerItem("lime_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(Parrot.Variant.GREEN));
-    public static final Holder.Reference<Item> PINK_PARROT_EGG_ITEM = REGISTRIES.registerItem("pink_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.PINK));
-    public static final Holder.Reference<Item> GRAY_PARROT_EGG_ITEM = REGISTRIES.registerItem("gray_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.GRAY));
-    public static final Holder.Reference<Item> LIGHT_GRAY_PARROT_EGG_ITEM = REGISTRIES.registerItem(
-            "light_gray_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(Parrot.Variant.GRAY));
-    public static final Holder.Reference<Item> CYAN_PARROT_EGG_ITEM = REGISTRIES.registerItem("cyan_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.CYAN));
-    public static final Holder.Reference<Item> PURPLE_PARROT_EGG_ITEM = REGISTRIES.registerItem("purple_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.PURPLE));
-    public static final Holder.Reference<Item> BLUE_PARROT_EGG_ITEM = REGISTRIES.registerItem("blue_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(Parrot.Variant.BLUE));
-    public static final Holder.Reference<Item> BROWN_PARROT_EGG_ITEM = REGISTRIES.registerItem("brown_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.BROWN));
-    public static final Holder.Reference<Item> GREEN_PARROT_EGG_ITEM = REGISTRIES.registerItem("green_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.GREEN));
-    public static final Holder.Reference<Item> RED_PARROT_EGG_ITEM = REGISTRIES.registerItem("red_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(Parrot.Variant.RED_BLUE));
-    public static final Holder.Reference<Item> BLACK_PARROT_EGG_ITEM = REGISTRIES.registerItem("black_parrot_egg",
-            ParrotEggItem::new,
-            () -> parrotEggProperties(ParrotVariants.BLACK));
+    public static final ColorCollection<Holder.Reference<Item>> PARROT_EGG_ITEM = ColorCollection.zipMap(ColorCollection.prefixWithColor(
+                    ColorCollection.create("parrot_egg")),
+            ParrotVariants.VARIANTS,
+            (String name, Either<Parrot.Variant, ResourceKey<ParrotVariant>> variant) -> {
+                return REGISTRIES.registerItem(name,
+                        ParrotEggItem::new,
+                        () -> new Item.Properties().stacksTo(16)
+                                .delayedComponent(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
+                                        (HolderLookup.Provider context) -> {
+                                            HolderLookup.RegistryLookup<ParrotVariant> parrotVariantLookup = context.lookupOrThrow(
+                                                    PARROT_VARIANT_REGISTRY);
+                                            return variant.mapRight(parrotVariantLookup::getOrThrow);
+                                        }));
+            });
     public static final Holder.Reference<CreativeModeTab> CREATIVE_MODE_TAB = REGISTRIES.registerCreativeModeTab(
             PARROT_CAGE_ITEM);
     public static final ResourceKey<LootTable> PARROT_LAY_LOOT_TABLE = REGISTRIES.registerLootTable(
@@ -180,20 +145,5 @@ public class ModRegistry {
 
     public static Item.Properties parrotCageProperties() {
         return new Item.Properties().stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY);
-    }
-
-    private static Item.Properties parrotEggProperties(ResourceKey<ParrotVariant> parrotVariant) {
-        return parrotEggProperties().delayedComponent(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                (HolderLookup.Provider context) -> {
-                    return Either.right(context.lookupOrThrow(PARROT_VARIANT_REGISTRY).getOrThrow(parrotVariant));
-                });
-    }
-
-    private static Item.Properties parrotEggProperties(Parrot.Variant parrotVariant) {
-        return parrotEggProperties().component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), Either.left(parrotVariant));
-    }
-
-    private static Item.Properties parrotEggProperties() {
-        return new Item.Properties().stacksTo(16);
     }
 }
