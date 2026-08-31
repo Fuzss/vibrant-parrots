@@ -3,5 +3,12 @@
     "1.21.11": "archived",
     "26.1.x": "maintained",
     "26.2.x": "primary"
+  },
+  "properties": {
+    "distributions.curseforge.id": "1576253",
+    "distributions.curseforge.slug": "vibrant-parrots",
+    "distributions.github.slug": "vibrant-parrots",
+    "distributions.modrinth.id": "v7w63Mwj",
+    "distributions.modrinth.slug": "vibrant-parrots"
   }
 }
