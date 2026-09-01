@@ -4,11 +4,17 @@
     "26.1.x": "maintained",
     "26.2.x": "primary"
   },
-  "properties": {
-    "distributions.curseforge.id": "1576253",
-    "distributions.curseforge.slug": "vibrant-parrots",
-    "distributions.github.slug": "vibrant-parrots",
-    "distributions.modrinth.id": "v7w63Mwj",
-    "distributions.modrinth.slug": "vibrant-parrots"
+  "distributions": {
+    "curseforge": {
+      "id": "1576253",
+      "slug": "vibrant-parrots"
+    },
+    "github": {
+      "slug": "vibrant-parrots"
+    },
+    "modrinth": {
+      "id": "v7w63Mwj",
+      "slug": "vibrant-parrots"
+    }
   }
 }
