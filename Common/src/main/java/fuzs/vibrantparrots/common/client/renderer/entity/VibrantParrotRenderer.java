@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.ParrotRenderer;
 import net.minecraft.client.renderer.entity.state.ParrotRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 
 public class VibrantParrotRenderer extends ParrotRenderer {
@@ -26,7 +26,7 @@ public class VibrantParrotRenderer extends ParrotRenderer {
     }
 
     @Override
-    public Identifier getTextureLocation(ParrotRenderState parrotRenderState) {
+    public ResourceLocation getTextureLocation(ParrotRenderState parrotRenderState) {
         ParrotVariant variant = ((VibrantParrotRenderState) parrotRenderState).variant;
         return variant == null ? MissingTextureAtlasSprite.getLocation() : variant.assetInfo().texturePath();
     }

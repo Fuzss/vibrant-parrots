@@ -1,10 +1,10 @@
 package fuzs.vibrantparrots.common.client;
 
-import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
-import fuzs.puzzleslib.common.api.client.core.v1.context.EntityRenderersContext;
-import fuzs.puzzleslib.common.api.client.core.v1.context.LayerDefinitionsContext;
-import fuzs.puzzleslib.common.api.client.event.v1.renderer.AddLivingEntityRenderLayersCallback;
-import fuzs.puzzleslib.common.api.client.event.v1.renderer.ExtractEntityRenderStateCallback;
+import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
+import fuzs.puzzleslib.api.client.core.v1.context.EntityRenderersContext;
+import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
+import fuzs.puzzleslib.api.client.event.v1.renderer.AddLivingEntityRenderLayersCallback;
+import fuzs.puzzleslib.api.client.event.v1.renderer.ExtractEntityRenderStateCallback;
 import fuzs.vibrantparrots.common.client.model.geom.ModModelLayers;
 import fuzs.vibrantparrots.common.client.renderer.entity.VanillaParrotRenderer;
 import fuzs.vibrantparrots.common.client.renderer.entity.VibrantParrotRenderer;

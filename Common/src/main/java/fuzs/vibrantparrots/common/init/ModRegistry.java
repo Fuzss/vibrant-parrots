@@ -2,11 +2,11 @@ package fuzs.vibrantparrots.common.init;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import fuzs.puzzleslib.common.api.attachment.v4.DataAttachmentRegistry;
-import fuzs.puzzleslib.common.api.attachment.v4.DataAttachmentType;
-import fuzs.puzzleslib.common.api.init.v3.registry.RegistryManager;
-import fuzs.puzzleslib.common.api.init.v3.tags.TagFactory;
-import fuzs.puzzleslib.common.api.network.v4.PlayerSet;
+import fuzs.puzzleslib.api.attachment.v4.DataAttachmentRegistry;
+import fuzs.puzzleslib.api.attachment.v4.DataAttachmentType;
+import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
+import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
+import fuzs.puzzleslib.api.network.v4.PlayerSet;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.VibrantParrot;

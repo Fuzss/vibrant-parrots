@@ -1,6 +1,6 @@
 package fuzs.vibrantparrots.common.handler;
 
-import fuzs.puzzleslib.common.api.event.v1.core.EventResultHolder;
+import fuzs.puzzleslib.api.event.v1.core.EventResultHolder;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;

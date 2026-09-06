@@ -1,20 +1,20 @@
 package fuzs.vibrantparrots.common;
 
-import fuzs.puzzleslib.common.api.config.v3.ConfigHolder;
-import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
-import fuzs.puzzleslib.common.api.core.v1.context.DataPackRegistriesContext;
-import fuzs.puzzleslib.common.api.core.v1.context.EntityAttributesContext;
-import fuzs.puzzleslib.common.api.core.v1.context.SpawnPlacementsContext;
-import fuzs.puzzleslib.common.api.event.v1.BuildCreativeModeTabContentsCallback;
-import fuzs.puzzleslib.common.api.event.v1.entity.ServerEntityEvents;
-import fuzs.puzzleslib.common.api.event.v1.entity.player.PlayerInteractEvents;
+import fuzs.puzzleslib.api.config.v3.ConfigHolder;
+import fuzs.puzzleslib.api.core.v1.ModConstructor;
+import fuzs.puzzleslib.api.core.v1.context.DataPackRegistriesContext;
+import fuzs.puzzleslib.api.core.v1.context.EntityAttributesContext;
+import fuzs.puzzleslib.api.core.v1.context.SpawnPlacementsContext;
+import fuzs.puzzleslib.api.event.v1.BuildCreativeModeTabContentsCallback;
+import fuzs.puzzleslib.api.event.v1.entity.ServerEntityEvents;
+import fuzs.puzzleslib.api.event.v1.entity.player.PlayerInteractEvents;
 import fuzs.vibrantparrots.common.config.ServerConfig;
 import fuzs.vibrantparrots.common.handler.ParrotBehaviorHandler;
 import fuzs.vibrantparrots.common.handler.ParrotSpawningHandler;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.parrot.Parrot;
@@ -72,7 +72,7 @@ public class VibrantParrots implements ModConstructor {
                 ParrotVariant.NETWORK_CODEC);
     }
 
-    public static Identifier id(String path) {
-        return Identifier.fromNamespaceAndPath(MOD_ID, path);
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }

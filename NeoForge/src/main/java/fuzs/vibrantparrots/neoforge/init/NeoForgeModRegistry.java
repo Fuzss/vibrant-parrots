@@ -1,6 +1,6 @@
 package fuzs.vibrantparrots.neoforge.init;
 
-import fuzs.puzzleslib.common.api.init.v3.registry.RegistryManager;
+import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.world.item.ParrotCageItem;
@@ -11,7 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class NeoForgeModRegistry {
     static final RegistryManager REGISTRIES = RegistryManager.from(VibrantParrots.MOD_ID);

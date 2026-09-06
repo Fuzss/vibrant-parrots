@@ -1,8 +1,8 @@
 package fuzs.vibrantparrots.common.data.loot;
 
 import com.mojang.datafixers.util.Either;
-import fuzs.puzzleslib.common.api.data.v2.AbstractLootProvider;
-import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
+import fuzs.puzzleslib.api.data.v2.AbstractLootProvider;
+import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.init.ParrotVariants;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;

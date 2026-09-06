@@ -1,10 +1,10 @@
 {
-    "minecraft": "26.2",
+    "minecraft": "1.21.1",
     "mod": {
         "id": "vibrantparrots",
         "group": "fuzs.vibrantparrots",
         "name": "Vibrant Parrots",
-        "version": "26.2.1",
+        "version": "21.1.0",
         "authors": [
             "Fuzs"
         ],

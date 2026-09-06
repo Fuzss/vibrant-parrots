@@ -1,7 +1,7 @@
 package fuzs.vibrantparrots.common.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import fuzs.puzzleslib.common.api.client.renderer.v1.RenderStateExtraData;
+import fuzs.puzzleslib.api.client.renderer.v1.RenderStateExtraData;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.client.model.geom.ModModelLayers;
 import fuzs.vibrantparrots.common.init.ModRegistry;
