@@ -6,7 +6,7 @@ import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.world.item.ParrotCageItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,7 @@ public class NeoForgeModRegistry {
             (Item.Properties properties) -> {
                 return new ParrotCageItem(properties) {
                     @Override
-                    public boolean emptyContents(@Nullable LivingEntity livingEntity, Level level, BlockPos blockPos, @Nullable BlockHitResult hitResult, @Nullable ItemStack itemStack) {
+                    public boolean emptyContents(@Nullable Player player, Level level, BlockPos blockPos, @Nullable BlockHitResult hitResult, @Nullable ItemStack itemStack) {
                         return true;
                     }
                 };

@@ -1,109 +1,62 @@
 package fuzs.vibrantparrots.common.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import fuzs.puzzleslib.api.client.renderer.v1.RenderStateExtraData;
-import fuzs.vibrantparrots.common.VibrantParrots;
-import fuzs.vibrantparrots.common.client.model.geom.ModModelLayers;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
-import net.minecraft.client.model.animal.parrot.ParrotModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.player.PlayerModel;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.entity.player.AvatarRenderer;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.entity.state.ParrotRenderState;
+import net.minecraft.client.renderer.entity.layers.ParrotOnShoulderLayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Holder;
-import net.minecraft.util.context.ContextKey;
-import net.minecraft.world.entity.Avatar;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
 /**
  * @see net.minecraft.client.renderer.entity.layers.ParrotOnShoulderLayer
  */
-public class VibrantParrotOnShoulderLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
-    public static final ContextKey<Optional<Holder<ParrotVariant>>> PARROT_ON_LEFT_SHOULDER_KEY = new ContextKey<>(
-            VibrantParrots.id("parrot_on_left_shoulder"));
-    public static final ContextKey<Optional<Holder<ParrotVariant>>> PARROT_ON_RIGHT_SHOULDER_KEY = new ContextKey<>(
-            VibrantParrots.id("parrot_on_right_shoulder"));
+public class VibrantParrotOnShoulderLayer<T extends Player> extends ParrotOnShoulderLayer<T> {
 
-    private final ParrotModel model;
-
-    public VibrantParrotOnShoulderLayer(RenderLayerParent<AvatarRenderState, PlayerModel> renderer, EntityModelSet modelSet) {
-        super(renderer);
-        this.model = new ParrotModel(modelSet.bakeLayer(ModModelLayers.PARROT));
+    public VibrantParrotOnShoulderLayer(RenderLayerParent<T, PlayerModel<T>> renderer, EntityModelSet modelSet) {
+        super(renderer, modelSet);
     }
 
-    public static void addLivingEntityRenderLayers(EntityType<?> entityType, LivingEntityRenderer<?, ?, ?> entityRenderer, EntityRendererProvider.Context context) {
-        if (entityRenderer instanceof AvatarRenderer<?> avatarRenderer) {
-            avatarRenderer.addLayer(new VibrantParrotOnShoulderLayer(avatarRenderer, context.getModelSet()));
-        }
-    }
-
-    public static void onExtractEntityRenderState(Entity entity, EntityRenderState renderState, float partialTick) {
-        if (entity instanceof Avatar && renderState instanceof AvatarRenderState avatarRenderState) {
-            RenderStateExtraData.set(renderState,
-                    PARROT_ON_LEFT_SHOULDER_KEY,
-                    ModRegistry.LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE.getOrDefault(entity, Optional.empty()));
-            RenderStateExtraData.set(renderState,
-                    PARROT_ON_RIGHT_SHOULDER_KEY,
-                    ModRegistry.RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE.getOrDefault(entity, Optional.empty()));
+    public static void addLivingEntityRenderLayers(EntityType<?> entityType, LivingEntityRenderer<?, ?> entityRenderer, EntityRendererProvider.Context context) {
+        if (entityRenderer instanceof PlayerRenderer avatarRenderer) {
+            avatarRenderer.addLayer(new VibrantParrotOnShoulderLayer<>(avatarRenderer, context.getModelSet()));
         }
     }
 
     @Override
-    public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, AvatarRenderState avatarRenderState, float yRot, float xRot) {
-        RenderStateExtraData.getOrDefault(avatarRenderState, PARROT_ON_LEFT_SHOULDER_KEY, Optional.empty())
-                .ifPresent((Holder<ParrotVariant> holder) -> {
-                    this.submitOnShoulder(poseStack,
-                            submitNodeCollector,
-                            packedLight,
-                            avatarRenderState,
-                            holder,
-                            yRot,
-                            xRot,
-                            true);
-                });
-        RenderStateExtraData.getOrDefault(avatarRenderState, PARROT_ON_RIGHT_SHOULDER_KEY, Optional.empty())
-                .ifPresent((Holder<ParrotVariant> holder) -> {
-                    this.submitOnShoulder(poseStack,
-                            submitNodeCollector,
-                            packedLight,
-                            avatarRenderState,
-                            holder,
-                            yRot,
-                            xRot,
-                            false);
-                });
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float netHeadYaw, float headPitch, boolean leftShoulder) {
+        this.getShoulderParrot(livingEntity, leftShoulder).ifPresent((Holder<ParrotVariant> variant) -> {
+            poseStack.pushPose();
+            poseStack.translate(leftShoulder ? 0.4F : -0.4F, livingEntity.isCrouching() ? -1.3F : -1.5F, 0.0F);
+            VertexConsumer vertexconsumer = buffer.getBuffer(this.model.renderType(variant.value()
+                    .assetInfo()
+                    .texturePath()));
+            this.model.renderOnShoulder(poseStack,
+                    vertexconsumer,
+                    packedLight,
+                    OverlayTexture.NO_OVERLAY,
+                    limbSwing,
+                    limbSwingAmount,
+                    netHeadYaw,
+                    headPitch,
+                    livingEntity.tickCount);
+            poseStack.popPose();
+        });
     }
 
-    private void submitOnShoulder(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight, AvatarRenderState renderState, Holder<ParrotVariant> variant, float yRot, float xRot, boolean isLeft) {
-        poseStack.pushPose();
-        poseStack.translate(isLeft ? 0.4F : -0.4F, renderState.isCrouching ? -1.3F : -1.5F, 0.0F);
-        ParrotRenderState parrotRenderState = new ParrotRenderState();
-        parrotRenderState.pose = ParrotModel.Pose.ON_SHOULDER;
-        parrotRenderState.ageInTicks = renderState.ageInTicks;
-        parrotRenderState.walkAnimationPos = renderState.walkAnimationPos;
-        parrotRenderState.walkAnimationSpeed = renderState.walkAnimationSpeed;
-        parrotRenderState.yRot = yRot;
-        parrotRenderState.xRot = xRot;
-        nodeCollector.submitModel(this.model,
-                parrotRenderState,
-                poseStack,
-                this.model.renderType(variant.value().assetInfo().texturePath()),
-                packedLight,
-                OverlayTexture.NO_OVERLAY,
-                renderState.outlineColor,
-                null);
-        poseStack.popPose();
+    private Optional<Holder<ParrotVariant>> getShoulderParrot(T livingEntity, boolean leftShoulder) {
+        return (leftShoulder ? ModRegistry.LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE :
+                ModRegistry.RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE).getOrDefault(livingEntity, Optional.empty());
     }
 }

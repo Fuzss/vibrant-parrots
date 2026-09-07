@@ -1,3 +1,5 @@
 classTweaker    v2  official
 accessible  field   net/minecraft/world/item/MobBucketItem  type    Lnet/minecraft/world/entity/EntityType;
 mutable field   net/minecraft/world/item/MobBucketItem  type    Lnet/minecraft/world/entity/EntityType;
+accessible  field   net/minecraft/client/renderer/entity/layers/ParrotOnShoulderLayer  model    Lnet/minecraft/client/model/ParrotModel;
+extendable  method  net/minecraft/client/renderer/entity/layers/ParrotOnShoulderLayer   render  (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/player/Player;FFFFZ)V

@@ -40,17 +40,11 @@ public record ParrotVariant(ClientAsset.ResourceTexture assetInfo) {
     /**
      * @see Player#extractParrotVariant(CompoundTag)
      */
-    public static Optional<Holder<ParrotVariant>> extractParrotVariant(Entity entity, CompoundTag compoundTag) {
-        if (!compoundTag.isEmpty()) {
-            return CompoundTagHelper.read(compoundTag, "id", BuiltInRegistries.ENTITY_TYPE.byNameCodec())
-                    .filter((EntityType<?> type) -> type == ModRegistry.PARROT_ENTITY_TYPE.value())
-                    .flatMap((EntityType<?> type) -> {
-                        return VariantUtils.readVariant(compoundTag,
-                                ModRegistry.PARROT_VARIANT_REGISTRY,
-                                entity.registryAccess());
-                    });
-        }
-
-        return Optional.empty();
+    public static Optional<Holder<ParrotVariant>> extractParrotVariant(Entity entity, CompoundTag tag) {
+        return CompoundTagHelper.read(tag, "id", BuiltInRegistries.ENTITY_TYPE.byNameCodec())
+                .filter((EntityType<?> type) -> type == ModRegistry.PARROT_ENTITY_TYPE.value())
+                .flatMap((EntityType<?> type) -> {
+                    return VariantUtils.readVariant(tag, ModRegistry.PARROT_VARIANT_REGISTRY, entity.registryAccess());
+                });
     }
 }
