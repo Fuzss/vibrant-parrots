@@ -1,8 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
-    "#": "minecraft:iron_bars",
-    "X": "minecraft:iron_trapdoor"
+    "#": {
+      "item": "minecraft:iron_bars"
+    },
+    "X": {
+      "item": "minecraft:iron_trapdoor"
+    }
   },
   "pattern": [
     " # ",
@@ -10,6 +15,7 @@
     "#X#"
   ],
   "result": {
+    "count": 1,
     "id": "vibrantparrots:bird_cage"
   }
 }
