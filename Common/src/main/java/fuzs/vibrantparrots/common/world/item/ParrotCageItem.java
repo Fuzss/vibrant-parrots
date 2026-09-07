@@ -6,17 +6,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
@@ -26,26 +23,26 @@ public class ParrotCageItem extends MobBucketItem {
     public ParrotCageItem(Properties properties) {
         // We use lava as it prevents the entity from being placed into waterloggable blocks.
         // The fluid is not placed, we prevent that via overriding #emptyContents.
-        super(EntityTypes.PARROT, Fluids.LAVA, SoundEvents.BUCKET_EMPTY, properties);
+        super(EntityType.PARROT, Fluids.LAVA, SoundEvents.BUCKET_EMPTY, properties);
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand interactionHand) {
-        InteractionResult interactionResult = super.use(level, player, interactionHand);
-        if (interactionResult instanceof InteractionResult.Success success) {
-            if (success.heldItemTransformedTo() != null && success.heldItemTransformedTo().is(Items.BUCKET)) {
-                return success.heldItemTransformedTo(new ItemStack(ModRegistry.BIRD_CAGE_ITEM));
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        InteractionResultHolder<ItemStack> result = super.use(level, player, interactionHand);
+        if (result.getResult().consumesAction()) {
+            if (result.getObject().is(Items.BUCKET)) {
+                return new InteractionResultHolder<>(result.getResult(), new ItemStack(ModRegistry.BIRD_CAGE_ITEM));
             }
         }
 
-        return interactionResult;
+        return result;
     }
 
     @Override
-    public void checkExtraContent(@Nullable LivingEntity livingEntity, Level level, ItemStack itemStack, BlockPos blockPos) {
+    public void checkExtraContent(@Nullable Player player, Level level, ItemStack itemStack, BlockPos blockPos) {
         if (level instanceof ServerLevel serverLevel) {
             this.type = this.getType(serverLevel, itemStack);
-            super.checkExtraContent(livingEntity, level, itemStack, blockPos);
+            super.checkExtraContent(player, level, itemStack, blockPos);
         }
     }
 
@@ -55,17 +52,12 @@ public class ParrotCageItem extends MobBucketItem {
             return (EntityType<Mob>) entityType;
         } else {
             return ParrotSpawningHandler.getSpawnAsCustomEntityOdds(serverLevel) ?
-                    ModRegistry.PARROT_ENTITY_TYPE.value() : EntityTypes.PARROT;
+                    ModRegistry.PARROT_ENTITY_TYPE.value() : EntityType.PARROT;
         }
     }
 
     @Override
-    public boolean emptyContents(@Nullable LivingEntity livingEntity, Level level, BlockPos blockPos, @Nullable BlockHitResult hitResult) {
+    public boolean emptyContents(@Nullable Player player, Level level, BlockPos blockPos, @Nullable BlockHitResult hitResult) {
         return true;
-    }
-
-    @Override
-    public Fluid getContent() {
-        return Fluids.EMPTY;
     }
 }

@@ -6,12 +6,11 @@ import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 
-public class ModItemTagProvider extends AbstractTagProvider<Item> {
+public class ModItemTagsProvider extends AbstractTagProvider<Item> {
 
-    public ModItemTagProvider(DataProviderContext context) {
+    public ModItemTagsProvider(DataProviderContext context) {
         super(Registries.ITEM, context);
     }
 
@@ -19,6 +18,6 @@ public class ModItemTagProvider extends AbstractTagProvider<Item> {
     public void addTags(HolderLookup.Provider registries) {
         this.tag(ModRegistry.PARROT_EGGS_ITEM_TAG)
                 .addAll(ModRegistry.PARROT_EGG_ITEM.map(Holder.Reference::key).asList());
-        this.tag(ItemTags.EGGS).addTag(ModRegistry.PARROT_EGGS_ITEM_TAG);
+        this.tag("c:eggs").addTag(ModRegistry.PARROT_EGGS_ITEM_TAG);
     }
 }

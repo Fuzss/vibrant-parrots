@@ -3,7 +3,6 @@ package fuzs.vibrantparrots.common.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
@@ -20,13 +19,14 @@ abstract class SpawnEggItemMixin extends Item {
     }
 
     @ModifyReturnValue(method = "spawnsEntity", at = @At("TAIL"))
-    private static boolean spawnsEntity(boolean spawnsEntity, ItemStack itemStack, EntityType<?> type) {
+    private boolean spawnsEntity(boolean spawnsEntity, ItemStack itemStack, EntityType<?> type) {
         return spawnsEntity
-                || getType(itemStack) == EntityTypes.PARROT && type == ModRegistry.PARROT_ENTITY_TYPE.value();
+                || this.getType(itemStack) == EntityType.PARROT && type == ModRegistry.PARROT_ENTITY_TYPE.value();
     }
 
     @Shadow
-    private static @Nullable EntityType<?> getType(ItemStack itemStack) {
+    @Nullable
+    public EntityType<?> getType(ItemStack itemStack) {
         throw new RuntimeException();
     }
 }

@@ -4,8 +4,8 @@ import fuzs.puzzleslib.api.client.data.v2.AbstractLanguageProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.init.ModRegistry;
+import fuzs.vibrantparrots.common.world.item.ColorCollection;
 import net.minecraft.core.Holder;
-import net.minecraft.world.level.block.ColorCollection;
 
 import java.util.Objects;
 

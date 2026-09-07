@@ -1,13 +1,12 @@
 package fuzs.vibrantparrots.common.init;
 
 import com.mojang.datafixers.util.Either;
+import fuzs.puzzleslib.api.core.v2.ClientAsset;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
-import net.minecraft.core.ClientAsset;
+import fuzs.vibrantparrots.common.world.item.ColorCollection;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.animal.parrot.Parrot;
-import net.minecraft.world.entity.variant.SpawnPrioritySelectors;
-import net.minecraft.world.level.block.ColorCollection;
+import net.minecraft.world.entity.animal.Parrot;
 
 public class ParrotVariants {
     public static final ResourceKey<ParrotVariant> WHITE = register("white");
@@ -60,7 +59,7 @@ public class ParrotVariants {
 
     private static void register(BootstrapContext<ParrotVariant> context, ResourceKey<ParrotVariant> resourceKey) {
         context.register(resourceKey,
-                new ParrotVariant(new ClientAsset.ResourceTexture(resourceKey.identifier()
-                        .withPrefix("entity/parrot/parrot_")), SpawnPrioritySelectors.fallback(0)));
+                new ParrotVariant(new ClientAsset.ResourceTexture(resourceKey.location()
+                        .withPrefix("entity/parrot/parrot_"))));
     }
 }

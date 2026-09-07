@@ -3,9 +3,9 @@ package fuzs.vibrantparrots.common.data.client;
 import fuzs.puzzleslib.api.client.data.v2.AbstractModelProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
 import fuzs.vibrantparrots.common.init.ModRegistry;
-import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.core.Holder;
+import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.world.item.Item;
 
 public class ModModelProvider extends AbstractModelProvider {

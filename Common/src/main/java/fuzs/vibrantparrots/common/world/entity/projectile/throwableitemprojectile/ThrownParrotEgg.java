@@ -11,11 +11,10 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.parrot.Parrot;
-import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -97,7 +96,7 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
         T mob = entityType.create(this.level(), EntitySpawnReason.TRIGGERED);
         if (mob != null) {
             mob.setAge(AgeableMob.BABY_START_AGE);
-            mob.snapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+            mob.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
             if (this.owner != null) {
                 mob.setOwnerReference(EntityReference.of(this.owner.getUUID()));
                 mob.setTame(true, false);

@@ -8,7 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -27,7 +27,7 @@ public class ParrotEggItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemInHand = player.getItemInHand(hand);
         level.playSound(null,
                 player.getX(),
@@ -38,7 +38,7 @@ public class ParrotEggItem extends Item implements ProjectileItem {
                 0.5F,
                 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         if (level instanceof ServerLevel serverLevel) {
-            Projectile.spawnProjectileFromRotation(ThrownParrotEgg::new,
+            ProjectileHelper.spawnProjectileFromRotation(ThrownParrotEgg::new,
                     serverLevel,
                     itemInHand,
                     player,
@@ -49,7 +49,7 @@ public class ParrotEggItem extends Item implements ProjectileItem {
 
         player.awardStat(Stats.ITEM_USED.get(this));
         itemInHand.consume(1, player);
-        return InteractionResult.SUCCESS;
+        return InteractionResultHolder.sidedSuccess(itemInHand, level.isClientSide());
     }
 
     @Override

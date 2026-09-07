@@ -13,11 +13,15 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.parrot.Parrot;
-import net.minecraft.world.entity.animal.parrot.ShoulderRidingEntity;
+import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.entity.animal.ShoulderRidingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -87,12 +91,12 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
     }
 
     @Inject(method = "mobInteract",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/parrot/Parrot;isFlying()Z"),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Parrot;isFlying()Z"),
             cancellable = true)
     public void mobInteract$1(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> callback) {
         ItemStack itemInHand = player.getItemInHand(hand);
         if (this.isFood(itemInHand)) {
-            if (this.isTame() && (this.isBaby() || this.getAge() == DEFAULT_AGE && this.canFallInLove())) {
+            if (this.isTame() && (this.isBaby() || this.getAge() == 0 && this.canFallInLove())) {
                 callback.setReturnValue(super.mobInteract(player, hand));
             } else {
                 callback.setReturnValue(InteractionResult.PASS);
@@ -107,9 +111,9 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
         this.setOrderedToSit(true);
     }
 
-    @ModifyReturnValue(method = "canBeABaby", at = @At("TAIL"))
-    public boolean canBeABaby(boolean canBeABaby) {
-        return true;
+    @ModifyReturnValue(method = "isBaby", at = @At("TAIL"))
+    public boolean isBaby(boolean isBaby) {
+        return this.getAge() < 0;
     }
 
     @Override
@@ -139,7 +143,7 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
 
     @ModifyReturnValue(method = "getBreedOffspring", at = @At("TAIL"))
     public @Nullable AgeableMob getBreedOffspring(@Nullable AgeableMob breedOffspring, ServerLevel level, AgeableMob partner) {
-        Parrot parrot = EntityTypes.PARROT.create(level, EntitySpawnReason.BREEDING);
+        Parrot parrot = EntityType.PARROT.create(level);
         if (parrot != null) {
             parrot.setComponent(DataComponents.PARROT_VARIANT, this.getVariant());
         }

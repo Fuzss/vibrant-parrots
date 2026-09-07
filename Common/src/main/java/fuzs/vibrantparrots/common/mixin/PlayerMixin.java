@@ -2,7 +2,6 @@ package fuzs.vibrantparrots.common.mixin;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import fuzs.vibrantparrots.common.init.ModRegistry;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,10 +17,10 @@ abstract class PlayerMixin extends LivingEntity {
         super(entityType, level);
     }
 
-    @WrapWithCondition(method = "hurtServer",
+    @WrapWithCondition(method = "hurt",
                        at = @At(value = "INVOKE",
                                 target = "Lnet/minecraft/world/entity/player/Player;removeEntitiesOnShoulder()V"))
-    public boolean hurtServer(Player player, ServerLevel serverLevel, DamageSource damageSource, float damageAmount) {
+    public boolean hurtServer(Player player, DamageSource damageSource, float damageAmount) {
         return damageSource.is(ModRegistry.DISMOUNTS_PARROTS_DAMAGE_TYPE_TAG);
     }
 }

@@ -6,11 +6,12 @@ import fuzs.puzzleslib.api.attachment.v4.DataAttachmentRegistry;
 import fuzs.puzzleslib.api.attachment.v4.DataAttachmentType;
 import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
-import fuzs.puzzleslib.api.network.v4.PlayerSet;
+import fuzs.puzzleslib.api.network.v3.PlayerSet;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.VibrantParrot;
 import fuzs.vibrantparrots.common.world.entity.projectile.throwableitemprojectile.ThrownParrotEgg;
+import fuzs.vibrantparrots.common.world.item.ColorCollection;
 import fuzs.vibrantparrots.common.world.item.ParrotCageItem;
 import fuzs.vibrantparrots.common.world.item.ParrotEggItem;
 import net.minecraft.core.Holder;
@@ -28,13 +29,11 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.animal.parrot.Parrot;
+import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.Optional;
@@ -68,7 +67,7 @@ public class ModRegistry {
                 return EntityDataSerializer.forValueType(ParrotVariant.STREAM_CODEC);
             });
     /**
-     * @see EntityTypes#PARROT
+     * @see EntityType#PARROT
      */
     public static final Holder.Reference<EntityType<VibrantParrot>> PARROT_ENTITY_TYPE = REGISTRIES.register(Registries.ENTITY_TYPE,
             "parrot",
@@ -78,7 +77,7 @@ public class ModRegistry {
                         .eyeHeight(0.54F)
                         .passengerAttachments(0.4625F)
                         .clientTrackingRange(8)
-                        .build(EntityTypes.PARROT.builtInRegistryHolder().key());
+                        .build(EntityType.PARROT.builtInRegistryHolder().key());
             });
     /**
      * @see EntityType#EGG
@@ -92,7 +91,7 @@ public class ModRegistry {
                         .clientTrackingRange(4)
                         .updateInterval(10);
             });
-    public static final Holder.Reference<Item> BIRD_CAGE_ITEM = REGISTRIES.registerItem("bird_cage",
+    public static final Holder.Reference<Item> BIRD_CAGE_ITEM = REGISTRIES.registerSimpleItem("bird_cage",
             () -> new Item.Properties().stacksTo(16));
     public static final Holder.Reference<Item> PARROT_CAGE_ITEM = REGISTRIES.whenOnFabricLike()
             .registerItem("parrot_cage", ParrotCageItem::new, ModRegistry::parrotCageProperties);
@@ -122,11 +121,11 @@ public class ModRegistry {
             "dismounts_parrots");
 
     public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
-            .defaultValue(EntityTypes.PLAYER, Optional.empty())
+            .defaultValue(EntityType.PLAYER, Optional.empty())
             .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("left_shoulder_parrot"));
     public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
-            .defaultValue(EntityTypes.PLAYER, Optional.empty())
+            .defaultValue(EntityType.PLAYER, Optional.empty())
             .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("right_shoulder_parrot"));
     public static final DataAttachmentType<Entity, OptionalInt> EGG_LAY_TIME_ATTACHMENT_TYPE = DataAttachmentRegistry.<OptionalInt>entityBuilder()

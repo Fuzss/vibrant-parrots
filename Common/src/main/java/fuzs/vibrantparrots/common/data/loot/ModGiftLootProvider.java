@@ -6,16 +6,15 @@ import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.init.ParrotVariants;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
-import net.minecraft.advancements.predicates.DataComponentMatchers;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import fuzs.vibrantparrots.common.world.item.ColorCollection;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.EntitySubPredicate;
+import net.minecraft.advancements.critereon.EntitySubPredicates;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
-import net.minecraft.core.component.DataComponentExactPredicate;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.animal.parrot.Parrot;
+import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -42,17 +41,15 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
                 ModRegistry.PARROT_EGG_ITEM,
                 ParrotVariants.VARIANTS,
                 (Holder.Reference<Item> item, Either<Parrot.Variant, ResourceKey<ParrotVariant>> parrotVariant) -> {
-                    DataComponentMatchers.Builder matcher = parrotVariant.map((Parrot.Variant variant) -> {
-                        return DataComponentMatchers.Builder.components()
-                                .exact(DataComponentExactPredicate.expect(DataComponents.PARROT_VARIANT, variant));
-                    }, (ResourceKey<ParrotVariant> key) -> {
-                        return DataComponentMatchers.Builder.components()
-                                .exact(DataComponentExactPredicate.expect(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                        Either.right(parrotVariantLookup.getOrThrow(key))));
-                    });
+                    EntitySubPredicate predicate = parrotVariant.map(EntitySubPredicates.PARROT::createPredicate,
+                            (ResourceKey<ParrotVariant> key) -> {
+                                return DataComponentMatchers.Builder.components()
+                                        .exact(DataComponentExactPredicate.expect(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
+                                                Either.right(parrotVariantLookup.getOrThrow(key))));
+                            });
                     return LootItem.lootTableItem(item.value())
                             .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-                                    EntityPredicate.Builder.entity().components(matcher.build())));
+                                    EntityPredicate.Builder.entity().subPredicate(predicate)));
                 }).asList();
         this.add(ModRegistry.PARROT_LAY_LOOT_TABLE,
                 LootTable.lootTable()

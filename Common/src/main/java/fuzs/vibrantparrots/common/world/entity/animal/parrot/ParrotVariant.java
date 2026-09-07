@@ -2,9 +2,10 @@ package fuzs.vibrantparrots.common.world.entity.animal.parrot;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import fuzs.puzzleslib.api.core.v2.ClientAsset;
+import fuzs.puzzleslib.api.util.v1.CompoundTagHelper;
 import fuzs.puzzleslib.api.util.v1.ValueSerializationHelper;
 import fuzs.vibrantparrots.common.init.ModRegistry;
-import net.minecraft.core.ClientAsset;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -18,17 +19,14 @@ import net.minecraft.world.entity.variant.*;
 import net.minecraft.world.level.storage.ValueInput;
 import org.apache.commons.lang3.mutable.MutableObject;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
  * @see net.minecraft.world.entity.animal.frog.FrogVariant
  */
-public record ParrotVariant(ClientAsset.ResourceTexture assetInfo,
-                            SpawnPrioritySelectors spawnConditions) implements PriorityProvider<SpawnContext, SpawnCondition> {
+public record ParrotVariant(ClientAsset.ResourceTexture assetInfo) {
     public static final Codec<ParrotVariant> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                    ClientAsset.ResourceTexture.DEFAULT_FIELD_CODEC.forGetter(ParrotVariant::assetInfo),
-                    SpawnPrioritySelectors.CODEC.fieldOf("spawn_conditions").forGetter(ParrotVariant::spawnConditions))
+                    ClientAsset.ResourceTexture.DEFAULT_FIELD_CODEC.forGetter(ParrotVariant::assetInfo))
             .apply(instance, ParrotVariant::new));
     public static final Codec<ParrotVariant> NETWORK_CODEC = RecordCodecBuilder.create(instance -> instance.group(
                     ClientAsset.ResourceTexture.DEFAULT_FIELD_CODEC.forGetter(ParrotVariant::assetInfo))
@@ -37,21 +35,12 @@ public record ParrotVariant(ClientAsset.ResourceTexture assetInfo,
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<ParrotVariant>> STREAM_CODEC = ByteBufCodecs.holderRegistry(
             ModRegistry.PARROT_VARIANT_REGISTRY);
 
-    private ParrotVariant(ClientAsset.ResourceTexture assetInfo) {
-        this(assetInfo, SpawnPrioritySelectors.EMPTY);
-    }
-
-    @Override
-    public List<Selector<SpawnContext, SpawnCondition>> selectors() {
-        return this.spawnConditions.selectors();
-    }
-
     /**
      * @see Player#extractParrotVariant(CompoundTag)
      */
     public static Optional<Holder<ParrotVariant>> extractParrotVariant(Entity entity, CompoundTag compoundTag) {
         if (!compoundTag.isEmpty()) {
-            EntityType<?> entityType = compoundTag.read("id", EntityType.CODEC).orElse(null);
+            EntityType<?> entityType = CompoundTagHelper.read(compoundTag, "id", EntityType.CODEC).orElse(null);
             if (entityType == ModRegistry.PARROT_ENTITY_TYPE.value()) {
                 MutableObject<Optional<Holder<ParrotVariant>>> mutableObject = new MutableObject<>(Optional.empty());
                 ValueSerializationHelper.load(entity.problemPath(),

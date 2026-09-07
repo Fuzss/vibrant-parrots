@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.animal.parrot.ShoulderRidingEntity;
+import net.minecraft.world.entity.animal.ShoulderRidingEntity;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,12 +21,11 @@ abstract class ShoulderRidingEntityMixin extends TamableAnimal {
     }
 
     @Inject(method = "setEntityOnShoulder",
-            at = @At(value = "INVOKE",
-                     target = "Lnet/minecraft/world/entity/animal/parrot/ShoulderRidingEntity;discard()V"))
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/ShoulderRidingEntity;discard()V"))
     public void setEntityOnShoulder(ServerPlayer player, CallbackInfoReturnable<Boolean> callbackInfo) {
         if (VibrantParrots.CONFIG.get(ServerConfig.class).dismountParrotsWhenSneaking) {
             Component component = Component.translatable("mount.onboard", Component.keybind("key.sneak"));
-            player.sendOverlayMessage(component);
+            player.displayClientMessage(component, true);
         }
     }
 }

@@ -1,27 +1,28 @@
 package fuzs.vibrantparrots.common.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.mojang.authlib.GameProfile;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.config.ServerConfig;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ServerPlayer.class)
-abstract class ServerPlayerMixin extends Player {
+@Mixin(Player.class)
+abstract class ServerPlayerMixin extends LivingEntity {
 
-    public ServerPlayerMixin(Level level, GameProfile gameProfile) {
-        super(level, gameProfile);
+    protected ServerPlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
+        super(entityType, level);
     }
 
     @Inject(method = "setEntityOnShoulder", at = @At("HEAD"), cancellable = true)
@@ -34,6 +35,9 @@ abstract class ServerPlayerMixin extends Player {
             callback.setReturnValue(false);
         }
     }
+
+    @Shadow
+    public abstract boolean isSecondaryUseActive();
 
     @ModifyExpressionValue(method = "handleShoulderEntities",
                            at = @At(value = "FIELD",
