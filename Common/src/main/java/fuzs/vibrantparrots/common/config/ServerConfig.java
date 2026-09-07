@@ -23,7 +23,7 @@ public class ServerConfig implements ConfigCore {
 
     public int sampleEggLayTime(RandomSource randomSource) {
         return TimeUtil.rangeOfSeconds(this.minEggLayTimeInMinutes * TimeUtil.SECONDS_PER_MINUTE,
-                (this.maxEggLayTimeInMinutes < this.minEggLayTimeInMinutes ? this.minEggLayTimeInMinutes :
-                        this.maxEggLayTimeInMinutes) * TimeUtil.SECONDS_PER_MINUTE).sample(randomSource);
+                        Math.max(this.maxEggLayTimeInMinutes, this.minEggLayTimeInMinutes) * TimeUtil.SECONDS_PER_MINUTE)
+                .sample(randomSource);
     }
 }

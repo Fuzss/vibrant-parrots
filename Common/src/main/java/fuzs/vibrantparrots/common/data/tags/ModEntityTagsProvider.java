@@ -9,9 +9,9 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypeIds;
 
-public class ModEntityTagProvider extends AbstractTagProvider<EntityType<?>> {
+public class ModEntityTagsProvider extends AbstractTagProvider<EntityType<?>> {
 
-    public ModEntityTagProvider(DataProviderContext context) {
+    public ModEntityTagsProvider(DataProviderContext context) {
         super(Registries.ENTITY_TYPE, context);
     }
 

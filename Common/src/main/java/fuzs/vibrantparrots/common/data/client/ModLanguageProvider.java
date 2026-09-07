@@ -10,23 +10,6 @@ import net.minecraft.world.level.block.ColorCollection;
 import java.util.Objects;
 
 public class ModLanguageProvider extends AbstractLanguageProvider {
-    @Deprecated
-    public static final ColorCollection<String> COLOR_NAMES = new ColorCollection<>("White",
-            "Orange",
-            "Magenta",
-            "Light Blue",
-            "Yellow",
-            "Lime",
-            "Pink",
-            "Gray",
-            "Light Gray",
-            "Cyan",
-            "Purple",
-            "Blue",
-            "Brown",
-            "Green",
-            "Red",
-            "Black");
 
     public ModLanguageProvider(DataProviderContext context) {
         super(context);
