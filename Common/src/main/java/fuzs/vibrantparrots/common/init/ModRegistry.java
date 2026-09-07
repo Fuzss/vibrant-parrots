@@ -2,12 +2,15 @@ package fuzs.vibrantparrots.common.init;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import fuzs.puzzleslib.api.attachment.v4.DataAttachmentRegistry;
 import fuzs.puzzleslib.api.attachment.v4.DataAttachmentType;
 import fuzs.puzzleslib.api.init.v3.registry.RegistryManager;
 import fuzs.puzzleslib.api.init.v3.tags.TagFactory;
 import fuzs.puzzleslib.api.network.v3.PlayerSet;
+import fuzs.puzzleslib.api.network.v4.codec.ExtraStreamCodecs;
 import fuzs.vibrantparrots.common.VibrantParrots;
+import fuzs.vibrantparrots.common.advancements.criterion.ParrotPredicate;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.VibrantParrot;
 import fuzs.vibrantparrots.common.world.entity.projectile.throwableitemprojectile.ThrownParrotEgg;
@@ -15,11 +18,11 @@ import fuzs.vibrantparrots.common.world.item.ColorCollection;
 import fuzs.vibrantparrots.common.world.item.ParrotCageItem;
 import fuzs.vibrantparrots.common.world.item.ParrotEggItem;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -32,6 +35,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -46,12 +50,13 @@ public class ModRegistry {
             ParrotVariants::bootstrap);
 
     static final RegistryManager REGISTRIES = RegistryManager.from(VibrantParrots.MOD_ID);
-    public static final Holder.Reference<DataComponentType<Either<Parrot.Variant, Holder<ParrotVariant>>>> PARROT_VARIANT_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
+    public static final Holder.Reference<DataComponentType<Either<Parrot.Variant, EitherHolder<ParrotVariant>>>> PARROT_VARIANT_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
             "parrot/variant",
-            (DataComponentType.Builder<Either<Parrot.Variant, Holder<ParrotVariant>>> builder) -> {
-                return builder.persistent(Codec.either(Parrot.Variant.CODEC, ParrotVariant.CODEC))
-                        .networkSynchronized(ByteBufCodecs.either(Parrot.Variant.STREAM_CODEC,
-                                ParrotVariant.STREAM_CODEC));
+            (DataComponentType.Builder<Either<Parrot.Variant, EitherHolder<ParrotVariant>>> builder) -> {
+                return builder.persistent(Codec.either(Parrot.Variant.CODEC,
+                                EitherHolder.codec(PARROT_VARIANT_REGISTRY, ParrotVariant.CODEC)))
+                        .networkSynchronized(ByteBufCodecs.either(ExtraStreamCodecs.fromEnum(Parrot.Variant::values),
+                                EitherHolder.streamCodec(PARROT_VARIANT_REGISTRY, ParrotVariant.STREAM_CODEC)));
             });
     /**
      * @see DataComponents#ENTITY_DATA
@@ -59,7 +64,7 @@ public class ModRegistry {
     public static final Holder.Reference<DataComponentType<EntityType<?>>> ENTITY_TYPE_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
             "entity_type",
             (DataComponentType.Builder<EntityType<?>> builder) -> {
-                return builder.persistent(EntityType.CODEC);
+                return builder.persistent(BuiltInRegistries.ENTITY_TYPE.byNameCodec());
             });
     public static final Holder.Reference<EntityDataSerializer<Holder<ParrotVariant>>> PARROT_VARIANT_ENTITY_DATA_SERIALIZER = REGISTRIES.registerEntityDataSerializer(
             "parrot/variant",
@@ -69,15 +74,14 @@ public class ModRegistry {
     /**
      * @see EntityType#PARROT
      */
-    public static final Holder.Reference<EntityType<VibrantParrot>> PARROT_ENTITY_TYPE = REGISTRIES.register(Registries.ENTITY_TYPE,
+    public static final Holder.Reference<EntityType<VibrantParrot>> PARROT_ENTITY_TYPE = REGISTRIES.registerEntityType(
             "parrot",
             () -> {
                 return EntityType.Builder.of(VibrantParrot::new, MobCategory.CREATURE)
                         .sized(0.5F, 0.9F)
                         .eyeHeight(0.54F)
                         .passengerAttachments(0.4625F)
-                        .clientTrackingRange(8)
-                        .build(EntityType.PARROT.builtInRegistryHolder().key());
+                        .clientTrackingRange(8);
             });
     /**
      * @see EntityType#EGG
@@ -86,7 +90,6 @@ public class ModRegistry {
             "parrot_egg",
             () -> {
                 return EntityType.Builder.<ThrownParrotEgg>of(ThrownParrotEgg::new, MobCategory.MISC)
-                        .noLootTable()
                         .sized(0.25F, 0.25F)
                         .clientTrackingRange(4)
                         .updateInterval(10);
@@ -98,17 +101,16 @@ public class ModRegistry {
     public static final ColorCollection<Holder.Reference<Item>> PARROT_EGG_ITEM = ColorCollection.zipMap(ColorCollection.prefixWithColor(
                     ColorCollection.create("parrot_egg")),
             ParrotVariants.VARIANTS,
-            (String name, Either<Parrot.Variant, ResourceKey<ParrotVariant>> variant) -> {
+            (String name, Either<Parrot.Variant, EitherHolder<ParrotVariant>> variant) -> {
                 return REGISTRIES.registerItem(name,
                         ParrotEggItem::new,
                         () -> new Item.Properties().stacksTo(16)
-                                .delayedComponent(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(),
-                                        (HolderLookup.Provider context) -> {
-                                            HolderLookup.RegistryLookup<ParrotVariant> parrotVariantLookup = context.lookupOrThrow(
-                                                    PARROT_VARIANT_REGISTRY);
-                                            return variant.mapRight(parrotVariantLookup::getOrThrow);
-                                        }));
+                                .component(PARROT_VARIANT_DATA_COMPONENT_TYPE.value(), variant));
             });
+    public static final Holder.Reference<MapCodec<ParrotPredicate>> PARROT_ENTITY_SUB_PREDICATE_TYPE = REGISTRIES.register(
+            Registries.ENTITY_SUB_PREDICATE_TYPE,
+            "parrot",
+            () -> ParrotPredicate.CODEC);
     public static final Holder.Reference<CreativeModeTab> CREATIVE_MODE_TAB = REGISTRIES.registerCreativeModeTab(
             PARROT_CAGE_ITEM);
     public static final ResourceKey<LootTable> PARROT_LAY_LOOT_TABLE = REGISTRIES.registerLootTable(

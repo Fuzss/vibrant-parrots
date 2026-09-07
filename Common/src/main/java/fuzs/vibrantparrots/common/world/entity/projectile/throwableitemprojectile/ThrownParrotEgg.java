@@ -4,8 +4,6 @@ import com.mojang.datafixers.util.Either;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.VibrantParrot;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,7 +22,7 @@ import net.minecraft.world.phys.HitResult;
 import java.util.function.Consumer;
 
 /**
- * @see net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEgg
+ * @see net.minecraft.world.entity.projectile.ThrownEgg
  */
 public class ThrownParrotEgg extends ThrowableItemProjectile {
     private static final EntityDimensions ZERO_SIZED_DIMENSIONS = EntityDimensions.fixed(0.0F, 0.0F);
@@ -33,15 +32,17 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
     }
 
     public ThrownParrotEgg(Level level, LivingEntity owner, ItemStack item) {
-        super(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), owner, level, item);
+        super(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), owner, level);
+        this.setItem(item);
     }
 
     public ThrownParrotEgg(Level level, double x, double y, double z, ItemStack item) {
-        super(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), x, y, z, level, item);
+        super(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), x, y, z, level);
+        this.setItem(item);
     }
 
     protected ParticleOptions getParticle() {
-        return new ItemParticleOption(ParticleTypes.ITEM, ItemStackTemplate.fromNonEmptyStack(this.getItem()));
+        return new ItemParticleOption(ParticleTypes.ITEM, this.getItem());
     }
 
     @Override
@@ -71,18 +72,18 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
     protected void onHit(HitResult hitResult) {
         super.onHit(hitResult);
         if (this.level() instanceof ServerLevel serverLevel) {
-            Either<Parrot.Variant, Holder<ParrotVariant>> either = this.getItem()
+            Either<Parrot.Variant, EitherHolder<ParrotVariant>> either = this.getItem()
                     .get(ModRegistry.PARROT_VARIANT_DATA_COMPONENT_TYPE.value());
             if (either != null) {
                 either.ifLeft((Parrot.Variant variant) -> {
-                    this.spawnParrotChick(serverLevel, EntityTypes.PARROT, (Parrot parrot) -> {
-                        parrot.setComponent(DataComponents.PARROT_VARIANT, variant);
+                    this.spawnParrotChick(serverLevel, EntityType.PARROT, (Parrot parrot) -> {
+                        parrot.setVariant(variant);
                     });
-                }).ifRight((Holder<ParrotVariant> holder) -> {
+                }).ifRight((EitherHolder<ParrotVariant> holder) -> {
                     this.spawnParrotChick(serverLevel,
                             ModRegistry.PARROT_ENTITY_TYPE.value(),
                             (VibrantParrot parrot) -> {
-                                parrot.setParrotVariant(holder);
+                                holder.unwrap(this.registryAccess()).ifPresent(parrot::setParrotVariant);
                             });
                 });
             }
@@ -93,12 +94,12 @@ public class ThrownParrotEgg extends ThrowableItemProjectile {
     }
 
     protected <T extends TamableAnimal> void spawnParrotChick(ServerLevel serverLevel, EntityType<T> entityType, Consumer<T> mobConsumer) {
-        T mob = entityType.create(this.level(), EntitySpawnReason.TRIGGERED);
+        T mob = entityType.create(this.level());
         if (mob != null) {
             mob.setAge(AgeableMob.BABY_START_AGE);
             mob.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-            if (this.owner != null) {
-                mob.setOwnerReference(EntityReference.of(this.owner.getUUID()));
+            if (this.getOwner() != null) {
+                mob.setOwnerUUID(this.getOwner().getUUID());
                 mob.setTame(true, false);
             } else {
                 mob.setTame(false, true);

@@ -7,6 +7,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Consumer;
 
+/**
+ * Copied from {@code Projectile} in Minecraft 26.2.
+ */
 public final class ProjectileHelper {
 
     private ProjectileHelper() {

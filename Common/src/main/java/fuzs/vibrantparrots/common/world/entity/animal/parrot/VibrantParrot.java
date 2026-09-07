@@ -4,8 +4,10 @@ import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AgeableMob;
@@ -13,12 +15,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Parrot;
-import net.minecraft.world.entity.variant.SpawnContext;
-import net.minecraft.world.entity.variant.VariantUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 
 public class VibrantParrot extends Parrot {
@@ -38,28 +39,38 @@ public class VibrantParrot extends Parrot {
     }
 
     @Override
+    protected Component getTypeName() {
+        return EntityType.PARROT.getDescription();
+    }
+
+    @Override
+    protected ResourceKey<LootTable> getDefaultLootTable() {
+        return EntityType.PARROT.getDefaultLootTable();
+    }
+
+    @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData spawnGroupData) {
-        VariantUtils.selectVariantToSpawn(SpawnContext.create(level, this.blockPosition()),
-                ModRegistry.PARROT_VARIANT_REGISTRY).ifPresent(this::setParrotVariant);
+        VariantUtils.selectVariantToSpawn(level, ModRegistry.PARROT_VARIANT_REGISTRY).ifPresent(this::setParrotVariant);
         return super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag valueInput) {
         super.readAdditionalSaveData(valueInput);
-        VariantUtils.readVariant(valueInput, ModRegistry.PARROT_VARIANT_REGISTRY).ifPresent(this::setParrotVariant);
+        VariantUtils.readVariant(valueInput, ModRegistry.PARROT_VARIANT_REGISTRY, this.registryAccess())
+                .ifPresent(this::setParrotVariant);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag valueOutput) {
         super.addAdditionalSaveData(valueOutput);
-        valueOutput.discard("Variant");
+        valueOutput.remove("Variant");
         VariantUtils.writeVariant(valueOutput, this.getParrotVariant());
     }
 
     @Override
     public Variant getVariant() {
-        return Variant.DEFAULT;
+        return Variant.RED_BLUE;
     }
 
     public void setParrotVariant(Holder<ParrotVariant> variant) {
