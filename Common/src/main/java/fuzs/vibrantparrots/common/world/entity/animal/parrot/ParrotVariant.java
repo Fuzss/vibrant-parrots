@@ -3,6 +3,7 @@ package fuzs.vibrantparrots.common.world.entity.animal.parrot;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fuzs.puzzleslib.api.core.v2.ClientAsset;
+import fuzs.puzzleslib.api.entity.v1.VariantUtils;
 import fuzs.puzzleslib.api.util.v1.CompoundTagHelper;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.advancements.critereon.EntitySubPredicates;

@@ -1,32 +1,15 @@
 package fuzs.vibrantparrots.common.data.client;
 
+import fuzs.puzzleslib.api.block.v1.ColorCollection;
 import fuzs.puzzleslib.api.client.data.v2.AbstractLanguageProvider;
 import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.init.ModRegistry;
-import fuzs.vibrantparrots.common.world.item.ColorCollection;
 import net.minecraft.core.Holder;
 
 import java.util.Objects;
 
 public class ModLanguageProvider extends AbstractLanguageProvider {
-    @Deprecated
-    public static final ColorCollection<String> COLOR_NAMES = new ColorCollection<>("White",
-            "Orange",
-            "Magenta",
-            "Light Blue",
-            "Yellow",
-            "Lime",
-            "Pink",
-            "Gray",
-            "Light Gray",
-            "Cyan",
-            "Purple",
-            "Blue",
-            "Brown",
-            "Green",
-            "Red",
-            "Black");
 
     public ModLanguageProvider(DataProviderContext context) {
         super(context);

@@ -1,11 +1,11 @@
 package fuzs.vibrantparrots.common.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import fuzs.puzzleslib.api.entity.v1.VariantUtils;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.config.ServerConfig;
 import fuzs.vibrantparrots.common.handler.ParrotBehaviorHandler;
 import fuzs.vibrantparrots.common.init.ModRegistry;
-import fuzs.vibrantparrots.common.world.entity.animal.parrot.VariantUtils;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.VibrantParrot;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;

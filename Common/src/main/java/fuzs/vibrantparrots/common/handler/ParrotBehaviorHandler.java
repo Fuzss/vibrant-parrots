@@ -1,9 +1,9 @@
 package fuzs.vibrantparrots.common.handler;
 
 import fuzs.puzzleslib.api.event.v1.core.EventResultHolder;
+import fuzs.puzzleslib.api.util.v1.EntityHelper;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -18,16 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 public class ParrotBehaviorHandler {
     private static final int EGG_DROP_TIME = 0;
@@ -53,7 +46,7 @@ public class ParrotBehaviorHandler {
      */
     private static void applyEggTime(Parrot parrot, ServerLevel serverLevel, int eggTime) {
         if (eggTime == EGG_DROP_TIME) {
-            if (dropFromGiftLootTable(parrot,
+            if (EntityHelper.dropFromGiftLootTable(parrot,
                     serverLevel,
                     ModRegistry.PARROT_LAY_LOOT_TABLE,
                     (ServerLevel level, ItemStack item) -> parrot.spawnAtLocation(item))) {
@@ -75,48 +68,6 @@ public class ParrotBehaviorHandler {
                     xy,
                     xz,
                     0.0);
-        }
-    }
-
-    /**
-     * Copied from Minecraft 26.1.
-     */
-    @Deprecated
-    public static boolean dropFromGiftLootTable(Entity entity, ServerLevel level, ResourceKey<LootTable> key, BiConsumer<ServerLevel, ItemStack> dropConsumer) {
-        return dropFromLootTable(level,
-                key,
-                params -> params.withParameter(LootContextParams.ORIGIN, entity.position())
-                        .withParameter(LootContextParams.THIS_ENTITY, entity)
-                        .create(LootContextParamSets.GIFT),
-                dropConsumer);
-    }
-
-    /**
-     * Copied from Minecraft 26.1.
-     */
-    @Deprecated
-    public static boolean dropFromShearingLootTable(Entity entity, ServerLevel level, ResourceKey<LootTable> key, BiConsumer<ServerLevel, ItemStack> dropConsumer) {
-        return dropFromLootTable(level,
-                key,
-                params -> params.withParameter(LootContextParams.ORIGIN, entity.position())
-                        .withParameter(LootContextParams.THIS_ENTITY, entity)
-                        .create(LootContextParamSets.SHEARING),
-                dropConsumer);
-    }
-
-    /**
-     * Copied from Minecraft 26.1.
-     */
-    @Deprecated
-    public static boolean dropFromLootTable(ServerLevel level, ResourceKey<LootTable> key, Function<LootParams.Builder, LootParams> paramsBuilder, BiConsumer<ServerLevel, ItemStack> dropConsumer) {
-        LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(key);
-        LootParams params = paramsBuilder.apply(new LootParams.Builder(level));
-        List<ItemStack> drops = lootTable.getRandomItems(params);
-        if (!drops.isEmpty()) {
-            drops.forEach(stack -> dropConsumer.accept(level, stack));
-            return true;
-        } else {
-            return false;
         }
     }
 

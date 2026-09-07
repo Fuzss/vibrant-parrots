@@ -1,5 +1,6 @@
 package fuzs.vibrantparrots.common.world.entity.animal.parrot;
 
+import fuzs.puzzleslib.api.entity.v1.VariantUtils;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;

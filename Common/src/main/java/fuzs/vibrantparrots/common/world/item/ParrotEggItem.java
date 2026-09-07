@@ -1,5 +1,6 @@
 package fuzs.vibrantparrots.common.world.item;
 
+import fuzs.puzzleslib.api.entity.v1.ProjectileHelper;
 import fuzs.vibrantparrots.common.world.entity.projectile.throwableitemprojectile.ThrownParrotEgg;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;

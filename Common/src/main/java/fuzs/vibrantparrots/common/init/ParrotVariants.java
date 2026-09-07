@@ -1,9 +1,9 @@
 package fuzs.vibrantparrots.common.init;
 
 import com.mojang.datafixers.util.Either;
+import fuzs.puzzleslib.api.block.v1.ColorCollection;
 import fuzs.puzzleslib.api.core.v2.ClientAsset;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
-import fuzs.vibrantparrots.common.world.item.ColorCollection;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.animal.Parrot;
