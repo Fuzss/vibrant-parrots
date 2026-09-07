@@ -63,7 +63,7 @@
                   "entity": "this",
                   "predicate": {
                     "type_specific": {
-                      "type": "minecraft:parrot",
+                      "type": "vibrantparrots:parrot",
                       "variant": "yellow_blue"
                     }
                   }
@@ -95,7 +95,7 @@
                   "entity": "this",
                   "predicate": {
                     "type_specific": {
-                      "type": "minecraft:parrot",
+                      "type": "vibrantparrots:parrot",
                       "variant": "green"
                     }
                   }
@@ -143,7 +143,7 @@
                   "entity": "this",
                   "predicate": {
                     "type_specific": {
-                      "type": "minecraft:parrot",
+                      "type": "vibrantparrots:parrot",
                       "variant": "gray"
                     }
                   }
@@ -191,7 +191,7 @@
                   "entity": "this",
                   "predicate": {
                     "type_specific": {
-                      "type": "minecraft:parrot",
+                      "type": "vibrantparrots:parrot",
                       "variant": "blue"
                     }
                   }
@@ -239,7 +239,7 @@
                   "entity": "this",
                   "predicate": {
                     "type_specific": {
-                      "type": "minecraft:parrot",
+                      "type": "vibrantparrots:parrot",
                       "variant": "red_blue"
                     }
                   }
