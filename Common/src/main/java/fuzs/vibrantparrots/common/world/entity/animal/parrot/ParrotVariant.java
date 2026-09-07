@@ -16,12 +16,11 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.Optional;
 
 /**
- * @see net.minecraft.world.entity.animal.frog.FrogVariant
+ * @see net.minecraft.world.entity.animal.FrogVariant
  */
 public record ParrotVariant(ClientAsset.ResourceTexture assetInfo) {
     public static final Codec<ParrotVariant> DIRECT_CODEC = RecordCodecBuilder.create((RecordCodecBuilder.Instance<ParrotVariant> instance) -> instance.group(
@@ -39,7 +38,7 @@ public record ParrotVariant(ClientAsset.ResourceTexture assetInfo) {
                     Optional.empty());
 
     /**
-     * @see Player#extractParrotVariant(CompoundTag)
+     * Copied from {@code Player::extractParrotVariant} in Minecraft 26.1.
      */
     public static Optional<Holder<ParrotVariant>> extractParrotVariant(Entity entity, CompoundTag tag) {
         return CompoundTagHelper.read(tag, "id", BuiltInRegistries.ENTITY_TYPE.byNameCodec())
