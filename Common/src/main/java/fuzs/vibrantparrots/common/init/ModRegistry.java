@@ -130,7 +130,7 @@ public class ModRegistry {
             .defaultValue(EntityType.PLAYER, Optional.empty())
             .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("right_shoulder_parrot"));
-    public static final DataAttachmentType<Entity, OptionalInt> EGG_LAY_TIME_ATTACHMENT_TYPE = DataAttachmentRegistry.<OptionalInt>entityBuilder()
+    public static final DataAttachmentType<Entity, OptionalInt> EGG_TIME_ATTACHMENT_TYPE = DataAttachmentRegistry.<OptionalInt>entityBuilder()
             .defaultValue(Parrot.class, OptionalInt.empty())
             .persistent(ExtraCodecs.optionalEmptyMap(ExtraCodecs.NON_NEGATIVE_INT)
                     .xmap((Optional<Integer> optional) -> {
@@ -138,7 +138,7 @@ public class ModRegistry {
                     }, (OptionalInt optional) -> {
                         return optional.isPresent() ? Optional.of(optional.getAsInt()) : Optional.empty();
                     }))
-            .build(VibrantParrots.id("egg_lay_time"));
+            .build(VibrantParrots.id("egg_time"));
 
     public static void bootstrap() {
         // NO-OP
