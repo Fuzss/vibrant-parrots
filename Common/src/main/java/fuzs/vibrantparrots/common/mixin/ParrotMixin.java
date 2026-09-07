@@ -56,7 +56,7 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0, Parrot.class) {
             @Override
             public boolean canUse() {
-                return super.canUse() && ModRegistry.EGG_LAY_TIME_ATTACHMENT_TYPE.getOrDefault(this.animal,
+                return super.canUse() && ModRegistry.EGG_TIME_ATTACHMENT_TYPE.getOrDefault(this.animal,
                         OptionalInt.empty()).isEmpty();
             }
         });
@@ -77,7 +77,7 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
     @Inject(method = "aiStep", at = @At("TAIL"))
     public void aiStep(CallbackInfo callback) {
         if (this.level() instanceof ServerLevel serverLevel) {
-            ParrotBehaviorHandler.tickEggLayTime(Parrot.class.cast(this), serverLevel);
+            ParrotBehaviorHandler.handleEggTime(Parrot.class.cast(this), serverLevel);
         }
     }
 
@@ -116,7 +116,7 @@ abstract class ParrotMixin extends ShoulderRidingEntity implements Bucketable {
     public void spawnChildFromBreeding(ServerLevel level, Animal partner) {
         this.finalizeSpawnChildFromBreeding(level, partner, null);
         int eggLayTime = VibrantParrots.CONFIG.get(ServerConfig.class).sampleEggLayTime(this.getRandom());
-        ModRegistry.EGG_LAY_TIME_ATTACHMENT_TYPE.set(this, OptionalInt.of(eggLayTime));
+        ModRegistry.EGG_TIME_ATTACHMENT_TYPE.set(this, OptionalInt.of(eggLayTime));
         this.setOrderedToSit(true);
     }
 
