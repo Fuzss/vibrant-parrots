@@ -9,8 +9,6 @@ import fuzs.vibrantparrots.common.init.ParrotVariants;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.ParrotVariant;
 import fuzs.vibrantparrots.common.world.item.ColorCollection;
 import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.EntitySubPredicate;
-import net.minecraft.advancements.critereon.EntitySubPredicates;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.item.EitherHolder;
@@ -26,6 +24,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ModGiftLootProvider extends AbstractLootProvider.Simple {
 
@@ -35,15 +34,16 @@ public class ModGiftLootProvider extends AbstractLootProvider.Simple {
 
     @Override
     public void addLootTables() {
-        // TODO check that this does not always return for the red and blue vanilla parrot for our entities
         List<LootPoolEntryContainer.Builder<?>> parrotLayBuilders = ColorCollection.<Holder.Reference<Item>, Either<Parrot.Variant, EitherHolder<ParrotVariant>>, LootPoolEntryContainer.Builder<?>>zipMap(
                 ModRegistry.PARROT_EGG_ITEM,
                 ParrotVariants.VARIANTS,
-                (Holder.Reference<Item> item, Either<Parrot.Variant, EitherHolder<ParrotVariant>> parrotVariant) -> {
-                    EntitySubPredicate predicate = parrotVariant.map(EntitySubPredicates.PARROT::createPredicate,
-                            (EitherHolder<ParrotVariant> key) -> {
-                                return new ParrotPredicate(key.unwrap(this.registries()));
-                            });
+                (Holder.Reference<Item> item, Either<Parrot.Variant, EitherHolder<ParrotVariant>> variant) -> {
+                    ParrotPredicate predicate = new ParrotPredicate(variant.map((Parrot.Variant value) -> {
+                        return Optional.of(Either.<Parrot.Variant, Holder<ParrotVariant>>left(value));
+                    }, (EitherHolder<ParrotVariant> holder) -> {
+                        return holder.unwrap(this.registries())
+                                .map(Either::<Parrot.Variant, Holder<ParrotVariant>>right);
+                    }));
                     return LootItem.lootTableItem(item.value())
                             .when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
                                     EntityPredicate.Builder.entity().subPredicate(predicate)));
