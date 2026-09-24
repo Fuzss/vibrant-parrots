@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "vibrantparrots:bird_cage"
+        "recipes": "vibrantparrots:bird_cage"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
