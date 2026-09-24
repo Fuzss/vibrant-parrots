@@ -16,7 +16,6 @@ import fuzs.vibrantparrots.common.world.item.ParrotEggItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -43,8 +42,6 @@ import java.util.OptionalInt;
 public class ModRegistry {
     public static final ResourceKey<Registry<ParrotVariant>> PARROT_VARIANT_REGISTRY = ResourceKey.createRegistryKey(
             VibrantParrots.id("parrot_variant"));
-    public static final RegistrySetBuilder REGISTRY_SET_BUILDER = new RegistrySetBuilder().add(PARROT_VARIANT_REGISTRY,
-            ParrotVariants::bootstrap);
 
     static final RegistryManager REGISTRIES = RegistryManager.from(VibrantParrots.MOD_ID);
     public static final Holder.Reference<DataComponentType<Either<Parrot.Variant, Holder<ParrotVariant>>>> PARROT_VARIANT_DATA_COMPONENT_TYPE = REGISTRIES.registerDataComponentType(
@@ -122,11 +119,11 @@ public class ModRegistry {
             "dismounts_parrots");
 
     public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> LEFT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
-            .defaultValue(EntityTypes.PLAYER, Optional.empty())
+            .defaultValue(EntityTypes.PLAYER.builtInRegistryHolder().key(), Optional.empty())
             .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("left_shoulder_parrot"));
     public static final DataAttachmentType<Entity, Optional<Holder<ParrotVariant>>> RIGHT_SHOULDER_PARROT_ATTACHMENT_TYPE = DataAttachmentRegistry.<Optional<Holder<ParrotVariant>>>entityBuilder()
-            .defaultValue(EntityTypes.PLAYER, Optional.empty())
+            .defaultValue(EntityTypes.PLAYER.builtInRegistryHolder().key(), Optional.empty())
             .networkSynchronized(ParrotVariant.STREAM_CODEC.apply(ByteBufCodecs::optional), PlayerSet::nearEntity)
             .build(VibrantParrots.id("right_shoulder_parrot"));
     public static final DataAttachmentType<Entity, OptionalInt> EGG_TIME_ATTACHMENT_TYPE = DataAttachmentRegistry.<OptionalInt>entityBuilder()

@@ -1,7 +1,7 @@
 package fuzs.vibrantparrots.common.data.client;
 
-import fuzs.puzzleslib.common.api.client.data.v2.AbstractLanguageProvider;
-import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
+import fuzs.puzzleslib.common.api.client.data.v3.language.AbstractLanguageProvider;
+import fuzs.puzzleslib.common.api.data.v3.core.DataProviderContext;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.core.Holder;
@@ -20,14 +20,14 @@ public class ModLanguageProvider extends AbstractLanguageProvider {
     }
 
     @Override
-    public void addTranslations(TranslationBuilder translationBuilder) {
-        translationBuilder.add(ModRegistry.CREATIVE_MODE_TAB.value(), VibrantParrots.MOD_NAME);
-        translationBuilder.add(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), "Parrot Egg");
-        translationBuilder.add(ModRegistry.BIRD_CAGE_ITEM.value(), "Bird Cage");
-        translationBuilder.add(ModRegistry.PARROT_CAGE_ITEM.value(), "Cage of Parrot");
+    public void addTranslations() {
+        this.add(ModRegistry.CREATIVE_MODE_TAB.value(), VibrantParrots.MOD_NAME);
+        this.add(ModRegistry.PARROT_EGG_ENTITY_TYPE.value(), "Parrot Egg");
+        this.add(ModRegistry.BIRD_CAGE_ITEM.value(), "Bird Cage");
+        this.add(ModRegistry.PARROT_CAGE_ITEM.value(), "Cage of Parrot");
         ColorCollection.zipApply(ModRegistry.PARROT_EGG_ITEM,
                 prefixWithColor(ColorCollection.create("Parrot Egg")),
-                translationBuilder::addItem);
+                this::addItem);
     }
 
     @Override

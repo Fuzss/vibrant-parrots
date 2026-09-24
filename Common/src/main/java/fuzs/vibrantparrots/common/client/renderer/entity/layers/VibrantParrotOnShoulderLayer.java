@@ -1,7 +1,7 @@
 package fuzs.vibrantparrots.common.client.renderer.entity.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import fuzs.puzzleslib.common.api.client.renderer.v1.RenderStateExtraData;
+import fuzs.puzzleslib.common.api.client.renderer.v2.RenderStateExtraData;
 import fuzs.vibrantparrots.common.VibrantParrots;
 import fuzs.vibrantparrots.common.client.model.geom.ModModelLayers;
 import fuzs.vibrantparrots.common.init.ModRegistry;
@@ -102,8 +102,7 @@ public class VibrantParrotOnShoulderLayer extends RenderLayer<AvatarRenderState,
                 this.model.renderType(variant.value().assetInfo().texturePath()),
                 packedLight,
                 OverlayTexture.NO_OVERLAY,
-                renderState.outlineColor,
-                null);
+                renderState.outlineColor);
         poseStack.popPose();
     }
 }
