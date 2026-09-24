@@ -52,7 +52,7 @@ public class ParrotBehaviorHandler {
                         (parrot.getRandom().nextFloat() - parrot.getRandom().nextFloat()) * 0.2F + 1.0F);
                 parrot.gameEvent(GameEvent.ENTITY_PLACE);
             }
-        } else if (eggTime % 10 == 0) {
+        } else if (eggTime % 40 == 0) {
             double xd = parrot.getRandom().nextGaussian() * 0.02;
             double xy = parrot.getRandom().nextGaussian() * 0.02;
             double xz = parrot.getRandom().nextGaussian() * 0.02;
