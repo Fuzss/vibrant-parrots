@@ -1,5 +1,7 @@
 package fuzs.vibrantparrots.common.handler;
 
+import fuzs.vibrantparrots.common.VibrantParrots;
+import fuzs.vibrantparrots.common.config.ServerConfig;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import fuzs.vibrantparrots.common.world.entity.animal.parrot.VibrantParrot;
 import net.minecraft.server.level.ServerLevel;
@@ -8,29 +10,39 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.parrot.Parrot;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Set;
+import java.util.Objects;
 
 public class ParrotSpawningHandler {
     private static final int VANILLA_PARROT_VARIANTS = Parrot.Variant.values().length;
-    private static final Set<EntitySpawnReason> VALID_SPAWN_REASONS = Set.of(EntitySpawnReason.NATURAL,
-            EntitySpawnReason.CHUNK_GENERATION,
-            EntitySpawnReason.SPAWNER,
-            EntitySpawnReason.TRIAL_SPAWNER,
-            EntitySpawnReason.SPAWN_ITEM_USE,
-            EntitySpawnReason.DISPENSER);
 
-    public static void onEntityLoad(Entity entity, ServerLevel serverLevel, boolean isLoadedFromDisk, @Nullable EntitySpawnReason entitySpawnReason) {
-        if (!isLoadedFromDisk && entitySpawnReason != null && VALID_SPAWN_REASONS.contains(entitySpawnReason)) {
-            if (entity.getType() == EntityType.PARROT && entity instanceof Mob mob && getSpawnAsCustomEntityOdds(
-                    serverLevel)) {
-                mob.convertTo(ModRegistry.PARROT_ENTITY_TYPE.value(),
-                        ConversionParams.single(mob, false, false),
-                        (VibrantParrot parrot) -> {
-                            DifficultyInstance difficulty = serverLevel.getCurrentDifficultyAt(mob.blockPosition());
-                            parrot.finalizeSpawn(serverLevel, difficulty, entitySpawnReason, null);
-                        });
-            }
+    public static void onEntityLoad(Entity entity, ServerLevel serverLevel, boolean isLoadedFromDisk, @Nullable EntitySpawnReason spawnReason) {
+        if (!isLoadedFromDisk && isValidForParrotConversion(entity, serverLevel, spawnReason)
+                && entity instanceof Mob mob) {
+            EntitySpawnReason validatedSpawnReason = validateSpawnReason(spawnReason);
+            mob.convertTo(ModRegistry.PARROT_ENTITY_TYPE.value(),
+                    ConversionParams.single(mob, false, false),
+                    (VibrantParrot parrot) -> {
+                        DifficultyInstance difficulty = serverLevel.getCurrentDifficultyAt(mob.blockPosition());
+                        parrot.finalizeSpawn(serverLevel, difficulty, validatedSpawnReason, null);
+                    });
         }
+    }
+
+    private static boolean isValidForParrotConversion(Entity entity, ServerLevel serverLevel, @Nullable EntitySpawnReason spawnReason) {
+        if (entity.getType() != EntityType.PARROT) {
+            return false;
+        }
+        if (spawnReason == null || !VibrantParrots.CONFIG.get(ServerConfig.class).volatileSpawnReasons.contains(
+                spawnReason)) {
+            return false;
+        }
+
+        return getSpawnAsCustomEntityOdds(serverLevel);
+    }
+
+    private static EntitySpawnReason validateSpawnReason(@Nullable EntitySpawnReason spawnReason) {
+        Objects.requireNonNull(spawnReason, "spawn reason is null");
+        return spawnReason == EntitySpawnReason.LOAD ? EntitySpawnReason.NATURAL : spawnReason;
     }
 
     public static boolean getSpawnAsCustomEntityOdds(ServerLevel serverLevel) {
