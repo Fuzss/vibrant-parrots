@@ -114,7 +114,7 @@ public class ModRegistry {
 
     static final TagFactory TAGS = TagFactory.make(VibrantParrots.MOD_ID);
     public static final TagKey<Item> PARROT_EGGS_ITEM_TAG = TAGS.registerItemTag("parrot_eggs");
-    public static final TagKey<EntityType<?>> PARROTS_ENTITY_TAG = TAGS.registerEntityTypeTag("parrots");
+    public static final TagKey<EntityType<?>> PARROT_ENTITY_TAG = TAGS.registerEntityTypeTag("parrot");
     public static final TagKey<DamageType> DISMOUNTS_PARROTS_DAMAGE_TYPE_TAG = TAGS.registerDamageTypeTag(
             "dismounts_parrots");
 

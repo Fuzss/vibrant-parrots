@@ -3,7 +3,7 @@ package fuzs.vibrantparrots.neoforge;
 import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.neoforge.api.data.v3.core.DataProviderBuilder;
 import fuzs.vibrantparrots.common.VibrantParrots;
-import fuzs.vibrantparrots.common.data.ModRecipeProvider;
+import fuzs.vibrantparrots.common.data.recipes.ModRecipeProvider;
 import fuzs.vibrantparrots.common.data.loot.ModGiftLootProvider;
 import fuzs.vibrantparrots.common.data.tags.ModDamageTypeTagsProvider;
 import fuzs.vibrantparrots.common.data.tags.ModEntityTagsProvider;

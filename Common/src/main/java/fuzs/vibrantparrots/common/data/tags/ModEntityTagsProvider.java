@@ -19,6 +19,6 @@ public class ModEntityTagsProvider extends AbstractTagsProvider<EntityType<?>> {
     public void addTags(HolderLookup.Provider registries) {
         this.tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModRegistry.PARROT_ENTITY_TYPE);
         this.tag(EntityTypeTags.FOLLOWABLE_FRIENDLY_MOBS).add(ModRegistry.PARROT_ENTITY_TYPE);
-        this.tag(ModRegistry.PARROTS_ENTITY_TAG).add(EntityTypeIds.PARROT).add(ModRegistry.PARROT_ENTITY_TYPE);
+        this.tag(ModRegistry.PARROT_ENTITY_TAG).add(EntityTypeIds.PARROT).add(ModRegistry.PARROT_ENTITY_TYPE);
     }
 }

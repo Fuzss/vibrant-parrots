@@ -1,6 +1,5 @@
-package fuzs.vibrantparrots.common.data;
+package fuzs.vibrantparrots.common.data.recipes;
 
-import fuzs.puzzleslib.common.api.data.v3.core.DataProviderContext;
 import fuzs.puzzleslib.common.api.data.v3.recipes.AbstractRecipeProvider;
 import fuzs.vibrantparrots.common.init.ModRegistry;
 import net.minecraft.advancements.Advancement;
