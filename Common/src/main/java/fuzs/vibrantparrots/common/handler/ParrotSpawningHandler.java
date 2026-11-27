@@ -32,6 +32,12 @@ public class ParrotSpawningHandler {
         if (entity.getType() != EntityType.PARROT) {
             return false;
         }
+
+        // Tamed parrots are re-created when dismounting a shoulder; make sure to never convert them.
+        if (entity instanceof TamableAnimal tamableAnimal && tamableAnimal.isTame()) {
+            return false;
+        }
+
         if (spawnReason == null || !VibrantParrots.CONFIG.get(ServerConfig.class).volatileSpawnReasons.contains(
                 spawnReason)) {
             return false;
